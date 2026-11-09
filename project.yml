@@ -1,0 +1,50 @@
+name: TABi
+options:
+  bundleIdPrefix: com.tabi
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    GENERATE_INFOPLIST_FILE: false
+targets:
+  TABi:
+    type: application
+    platform: iOS
+    sources:
+      - path: TABi
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.tabi.app
+        INFOPLIST_FILE: TABi/Info.plist
+        TARGETED_DEVICE_FAMILY: "1"
+        ENABLE_USER_SCRIPT_SANDBOXING: false
+    dependencies: []
+  TABiTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: TABiTests
+    dependencies:
+      - target: TABi
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.tabi.app.tests
+        GENERATE_INFOPLIST_FILE: true
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/TABi.app/TABi"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+schemes:
+  TABi:
+    build:
+      targets:
+        TABi: all
+        TABiTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - TABiTests

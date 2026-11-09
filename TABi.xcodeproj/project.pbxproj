@@ -1,0 +1,443 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		036E2C742558414483DFE132 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DF5E8FC3975FA3D10473A1 /* RootView.swift */; };
+		1E24EEE3C2FE10FF45F360A2 /* DesignSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE93E8745504C48961ADAB46 /* DesignSystemTests.swift */; };
+		210DF3F5663BAA53AFBD4065 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99762277B0F4973FB498D1B6 /* Typography.swift */; };
+		2C8F29E8B3398871B741F5D0 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA53787BB7F3897F2C307DF /* Colors.swift */; };
+		61C43AC8BD51DFB06D8990E2 /* TABIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FDAC61ECFAA9B6C29B30F3 /* TABIApp.swift */; };
+		A15C80B9C33481D81C9A4756 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E66E43E9242C758EEDC0AD /* Spacing.swift */; };
+		C15640C3F2FD75A4CBC6C2A1 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE7FBA1094C7EC8DD8955CC /* SplashView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		68C4B8B3D0CE67181712F490 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C263844857729BE31B51AE7B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 81D3AB9B1F87EC850768A375;
+			remoteInfo = TABi;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1BF579825D8E3F783663A33D /* TABi.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = TABi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DE7FBA1094C7EC8DD8955CC /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		87E66E43E9242C758EEDC0AD /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
+		95FDAC61ECFAA9B6C29B30F3 /* TABIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TABIApp.swift; sourceTree = "<group>"; };
+		98131906F4E9F61BD8C211E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		99762277B0F4973FB498D1B6 /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
+		A7DF5E8FC3975FA3D10473A1 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		BE93E8745504C48961ADAB46 /* DesignSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemTests.swift; sourceTree = "<group>"; };
+		CFA53787BB7F3897F2C307DF /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		DCC57A7CECDDF690E696C228 /* TABiTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TABiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		09F46F52FAAFA7705707030C /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A7DF5E8FC3975FA3D10473A1 /* RootView.swift */,
+				2DE7FBA1094C7EC8DD8955CC /* SplashView.swift */,
+				95FDAC61ECFAA9B6C29B30F3 /* TABIApp.swift */,
+				D15F16DCBF9F6EB1DDA209D6 /* DesignSystem */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		615E37F407D93738556F20D9 /* TABi */ = {
+			isa = PBXGroup;
+			children = (
+				98131906F4E9F61BD8C211E3 /* Info.plist */,
+				09F46F52FAAFA7705707030C /* App */,
+				9A88DF39FB09AEA2D1BDCDD6 /* Features */,
+				9D395C2483833048D5A83159 /* Map */,
+			);
+			path = TABi;
+			sourceTree = "<group>";
+		};
+		9A88DF39FB09AEA2D1BDCDD6 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		9D395C2483833048D5A83159 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		D15F16DCBF9F6EB1DDA209D6 /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				CFA53787BB7F3897F2C307DF /* Colors.swift */,
+				87E66E43E9242C758EEDC0AD /* Spacing.swift */,
+				99762277B0F4973FB498D1B6 /* Typography.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		E03D1D595101A6D99F85591A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1BF579825D8E3F783663A33D /* TABi.app */,
+				DCC57A7CECDDF690E696C228 /* TABiTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F647C8B772702A59AD26277E = {
+			isa = PBXGroup;
+			children = (
+				615E37F407D93738556F20D9 /* TABi */,
+				FBD72B09ABD80A0F6733E595 /* TABiTests */,
+				E03D1D595101A6D99F85591A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FBD72B09ABD80A0F6733E595 /* TABiTests */ = {
+			isa = PBXGroup;
+			children = (
+				BE93E8745504C48961ADAB46 /* DesignSystemTests.swift */,
+			);
+			path = TABiTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		81D3AB9B1F87EC850768A375 /* TABi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ADACCC65514BE120CD947629 /* Build configuration list for PBXNativeTarget "TABi" */;
+			buildPhases = (
+				ACBE61DD988175B6F9D1E06F /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TABi;
+			packageProductDependencies = (
+			);
+			productName = TABi;
+			productReference = 1BF579825D8E3F783663A33D /* TABi.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CB27C40579F931C4734279C8 /* TABiTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E3A605D319EC9BFC929D9489 /* Build configuration list for PBXNativeTarget "TABiTests" */;
+			buildPhases = (
+				DE06F0EF523B03B3D5C46A2D /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				11E45C302FC97A80D0F3E9B7 /* PBXTargetDependency */,
+			);
+			name = TABiTests;
+			packageProductDependencies = (
+			);
+			productName = TABiTests;
+			productReference = DCC57A7CECDDF690E696C228 /* TABiTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C263844857729BE31B51AE7B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 219EF3825EAEADE4E2D07BC3 /* Build configuration list for PBXProject "TABi" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = F647C8B772702A59AD26277E;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = E03D1D595101A6D99F85591A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				81D3AB9B1F87EC850768A375 /* TABi */,
+				CB27C40579F931C4734279C8 /* TABiTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		ACBE61DD988175B6F9D1E06F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C8F29E8B3398871B741F5D0 /* Colors.swift in Sources */,
+				036E2C742558414483DFE132 /* RootView.swift in Sources */,
+				A15C80B9C33481D81C9A4756 /* Spacing.swift in Sources */,
+				C15640C3F2FD75A4CBC6C2A1 /* SplashView.swift in Sources */,
+				61C43AC8BD51DFB06D8990E2 /* TABIApp.swift in Sources */,
+				210DF3F5663BAA53AFBD4065 /* Typography.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DE06F0EF523B03B3D5C46A2D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E24EEE3C2FE10FF45F360A2 /* DesignSystemTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		11E45C302FC97A80D0F3E9B7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 81D3AB9B1F87EC850768A375 /* TABi */;
+			targetProxy = 68C4B8B3D0CE67181712F490 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		04CB4D23D307AA2D24284887 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = TABi/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tabi.app;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		5163D48E89958CB3C4CD6C00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		658862E4033528D46F2EFE37 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		66FB64E05060B3A4554F9BD9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = TABi/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tabi.app;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		89CF5F11AEC6658C73557C7D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tabi.app.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TABi.app/TABi";
+			};
+			name = Release;
+		};
+		997C29CFE354C149898E56E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tabi.app.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TABi.app/TABi";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		219EF3825EAEADE4E2D07BC3 /* Build configuration list for PBXProject "TABi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5163D48E89958CB3C4CD6C00 /* Debug */,
+				658862E4033528D46F2EFE37 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		ADACCC65514BE120CD947629 /* Build configuration list for PBXNativeTarget "TABi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04CB4D23D307AA2D24284887 /* Debug */,
+				66FB64E05060B3A4554F9BD9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E3A605D319EC9BFC929D9489 /* Build configuration list for PBXNativeTarget "TABiTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				997C29CFE354C149898E56E7 /* Debug */,
+				89CF5F11AEC6658C73557C7D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C263844857729BE31B51AE7B /* Project object */;
+}
