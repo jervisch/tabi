@@ -8,12 +8,46 @@
 
 /* Begin PBXBuildFile section */
 		036E2C742558414483DFE132 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DF5E8FC3975FA3D10473A1 /* RootView.swift */; };
+		050D4FCE3567436CC42312F5 /* CameraCapturing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189414A9A39C9E6626FFE00C /* CameraCapturing.swift */; };
+		09A45FB14787508A7712AF7A /* RealCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BCA2C9865CF8EC0E05DC3D /* RealCamera.swift */; };
+		09FC947D2F81F61575D2CA1D /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D558B6D3387B1AEDBA0DDC9 /* AppEnvironment.swift */; };
+		0B2D28221D62ED76EB501D5E /* japan_prefectures.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 0455FE5037FC2668A0B65988 /* japan_prefectures.geojson */; };
+		0F522645BD43C45B09C445E3 /* PlaceComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92ADE9C2653A9E683A4C46D2 /* PlaceComponents.swift */; };
+		156B9D0146BB80AA61A28C05 /* MemoryGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1D4A3AB446F4885895E668 /* MemoryGridView.swift */; };
+		18860BFCB58742DA34612135 /* GeographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34577CC3FD106F7394300320 /* GeographyTests.swift */; };
+		18BE0FA4A72E5E3A2BF001FC /* MockCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDD34C35DA969C6B8162848 /* MockCamera.swift */; };
 		1E24EEE3C2FE10FF45F360A2 /* DesignSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE93E8745504C48961ADAB46 /* DesignSystemTests.swift */; };
 		210DF3F5663BAA53AFBD4065 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99762277B0F4973FB498D1B6 /* Typography.swift */; };
 		2C8F29E8B3398871B741F5D0 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA53787BB7F3897F2C307DF /* Colors.swift */; };
+		2EB5860821940C132BA52047 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B58247C944448A6BF6B5B0D5 /* README.md */; };
+		341353D9B7D59CE49037F5D5 /* MemoryFileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB3C98AF5DFEEBEFE15C42D /* MemoryFileStore.swift */; };
+		5B84C23BF4A2A12C3D78CE03 /* SeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387F0FE1A0FD020D65CEDEF1 /* SeedData.swift */; };
+		5E585F715AD3E9A08DDC7F59 /* Memory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A819E004D868732393D891C /* Memory.swift */; };
 		61C43AC8BD51DFB06D8990E2 /* TABIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FDAC61ECFAA9B6C29B30F3 /* TABIApp.swift */; };
+		692CAA56D1537E18F6BA3C1D /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6176FFE7EF6A7690A6CE25A2 /* Trip.swift */; };
+		6C8B75F46ED8749685FBB1FB /* DomainStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECD21EEE8F3C566D4EDDC62 /* DomainStoreTests.swift */; };
+		6E41526114CE04E97D40285B /* LocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB8EA8302B69BD6CD241B51 /* LocationProvider.swift */; };
+		71F600101916725E4D23D3B9 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7375EB3FBE619F46920C164 /* CameraView.swift */; };
+		78C0D5D32EA49DA931AD2F9A /* JapanGeography.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC9AEDF58FA650169E90477 /* JapanGeography.swift */; };
+		8980FCA3A443C999627102C5 /* DrillDownViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03A4B73896857B889299B1A /* DrillDownViews.swift */; };
+		90CE1A2999CEB4C2028223A3 /* TABiFilmProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255C17153BEB97FB5989EDC1 /* TABiFilmProcessor.swift */; };
+		90DD0F9F1453F54D9B5F49EA /* RecentLocationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214610298AC63FCB49871C21 /* RecentLocationStore.swift */; };
+		97C23DD521958A7D944FCD63 /* AtlasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6C90BB2ACDE4CC841D8EC4 /* AtlasView.swift */; };
 		A15C80B9C33481D81C9A4756 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E66E43E9242C758EEDC0AD /* Spacing.swift */; };
+		A60CFA711618A71BD50FFFC0 /* MemoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A9F6A3E0B78781BBDE727 /* MemoriesView.swift */; };
+		ACED724EF6C1F301319A0294 /* MemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8B0D16D9CFA6018DD201FBD /* MemoryStore.swift */; };
+		B23EF1923EB6937706B3D01E /* VisitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0587D98A5E2F48F77C7A3969 /* VisitStore.swift */; };
+		B6586682F5C5F59D5A9B41A4 /* VisitStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAFD83B398C5339B09E344D /* VisitStatus.swift */; };
+		BC426A5365D016D4E464F111 /* VisitDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5145833F332BCFB0C64274B /* VisitDetector.swift */; };
+		BDC6F03D33053312AFA5BAA6 /* JapanGeographyTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E666C429D697E3EAB6EE91 /* JapanGeographyTypes.swift */; };
 		C15640C3F2FD75A4CBC6C2A1 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE7FBA1094C7EC8DD8955CC /* SplashView.swift */; };
+		C47FCA50220933126F933F65 /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7B2A4E562D7D4E8D209BA9 /* Visit.swift */; };
+		D0AA824D9002E0EE33424A88 /* MockLocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35C18BAB632FF32174DA801 /* MockLocationProvider.swift */; };
+		D614FB3D12252D3752127DAD /* PlaceResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8AAF8852A7AA3C73DB60B0 /* PlaceResolver.swift */; };
+		DCC4407C892F4018816180DD /* RealLocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DB9E61925A226EB2282FD8 /* RealLocationProvider.swift */; };
+		E63D7708A91BEC82ADEEB8AC /* PhotoLibraryExporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AA0C58B31CFC442EBFD858 /* PhotoLibraryExporting.swift */; };
+		E94FB189F2D1238CC69E4FDC /* ModelContainer+TABi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C231F7F8EC8D063305BC913 /* ModelContainer+TABi.swift */; };
+		FA979D77DD5DEF7928530580 /* PhotoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4999DA4DB09B2FB3C5C36E /* PhotoDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,22 +61,65 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0455FE5037FC2668A0B65988 /* japan_prefectures.geojson */ = {isa = PBXFileReference; path = japan_prefectures.geojson; sourceTree = "<group>"; };
+		0587D98A5E2F48F77C7A3969 /* VisitStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitStore.swift; sourceTree = "<group>"; };
+		0C231F7F8EC8D063305BC913 /* ModelContainer+TABi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModelContainer+TABi.swift"; sourceTree = "<group>"; };
+		189414A9A39C9E6626FFE00C /* CameraCapturing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCapturing.swift; sourceTree = "<group>"; };
 		1BF579825D8E3F783663A33D /* TABi.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = TABi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		214610298AC63FCB49871C21 /* RecentLocationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentLocationStore.swift; sourceTree = "<group>"; };
+		22AA0C58B31CFC442EBFD858 /* PhotoLibraryExporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryExporting.swift; sourceTree = "<group>"; };
+		255C17153BEB97FB5989EDC1 /* TABiFilmProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TABiFilmProcessor.swift; sourceTree = "<group>"; };
+		2A819E004D868732393D891C /* Memory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memory.swift; sourceTree = "<group>"; };
 		2DE7FBA1094C7EC8DD8955CC /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		34577CC3FD106F7394300320 /* GeographyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeographyTests.swift; sourceTree = "<group>"; };
+		34DB9E61925A226EB2282FD8 /* RealLocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealLocationProvider.swift; sourceTree = "<group>"; };
+		387F0FE1A0FD020D65CEDEF1 /* SeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedData.swift; sourceTree = "<group>"; };
+		3EDD34C35DA969C6B8162848 /* MockCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCamera.swift; sourceTree = "<group>"; };
+		4B1D4A3AB446F4885895E668 /* MemoryGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryGridView.swift; sourceTree = "<group>"; };
+		4CB8EA8302B69BD6CD241B51 /* LocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationProvider.swift; sourceTree = "<group>"; };
+		6176FFE7EF6A7690A6CE25A2 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
+		7A4999DA4DB09B2FB3C5C36E /* PhotoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailView.swift; sourceTree = "<group>"; };
 		87E66E43E9242C758EEDC0AD /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
+		8D558B6D3387B1AEDBA0DDC9 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		8ECD21EEE8F3C566D4EDDC62 /* DomainStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainStoreTests.swift; sourceTree = "<group>"; };
+		92ADE9C2653A9E683A4C46D2 /* PlaceComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceComponents.swift; sourceTree = "<group>"; };
 		95FDAC61ECFAA9B6C29B30F3 /* TABIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TABIApp.swift; sourceTree = "<group>"; };
 		98131906F4E9F61BD8C211E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		99762277B0F4973FB498D1B6 /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
+		A35C18BAB632FF32174DA801 /* MockLocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocationProvider.swift; sourceTree = "<group>"; };
 		A7DF5E8FC3975FA3D10473A1 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		AE7B2A4E562D7D4E8D209BA9 /* Visit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visit.swift; sourceTree = "<group>"; };
+		AFC9AEDF58FA650169E90477 /* JapanGeography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JapanGeography.swift; sourceTree = "<group>"; };
+		B58247C944448A6BF6B5B0D5 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		BAB3C98AF5DFEEBEFE15C42D /* MemoryFileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryFileStore.swift; sourceTree = "<group>"; };
+		BE8AAF8852A7AA3C73DB60B0 /* PlaceResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceResolver.swift; sourceTree = "<group>"; };
 		BE93E8745504C48961ADAB46 /* DesignSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemTests.swift; sourceTree = "<group>"; };
+		C5145833F332BCFB0C64274B /* VisitDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitDetector.swift; sourceTree = "<group>"; };
+		C7375EB3FBE619F46920C164 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		CE6C90BB2ACDE4CC841D8EC4 /* AtlasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasView.swift; sourceTree = "<group>"; };
 		CFA53787BB7F3897F2C307DF /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		DAAFD83B398C5339B09E344D /* VisitStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitStatus.swift; sourceTree = "<group>"; };
 		DCC57A7CECDDF690E696C228 /* TABiTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TABiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E03A4B73896857B889299B1A /* DrillDownViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrillDownViews.swift; sourceTree = "<group>"; };
+		E8B0D16D9CFA6018DD201FBD /* MemoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryStore.swift; sourceTree = "<group>"; };
+		F39A9F6A3E0B78781BBDE727 /* MemoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoriesView.swift; sourceTree = "<group>"; };
+		F6BCA2C9865CF8EC0E05DC3D /* RealCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealCamera.swift; sourceTree = "<group>"; };
+		F7E666C429D697E3EAB6EE91 /* JapanGeographyTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JapanGeographyTypes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		0946CDE8675B50C24011C7D0 /* Export */ = {
+			isa = PBXGroup;
+			children = (
+				22AA0C58B31CFC442EBFD858 /* PhotoLibraryExporting.swift */,
+			);
+			path = Export;
+			sourceTree = "<group>";
+		};
 		09F46F52FAAFA7705707030C /* App */ = {
 			isa = PBXGroup;
 			children = (
+				8D558B6D3387B1AEDBA0DDC9 /* AppEnvironment.swift */,
 				A7DF5E8FC3975FA3D10473A1 /* RootView.swift */,
 				2DE7FBA1094C7EC8DD8955CC /* SplashView.swift */,
 				95FDAC61ECFAA9B6C29B30F3 /* TABIApp.swift */,
@@ -51,20 +128,106 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		11EEAF3EFFC244B81BFEF790 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				BAB3C98AF5DFEEBEFE15C42D /* MemoryFileStore.swift */,
+				E8B0D16D9CFA6018DD201FBD /* MemoryStore.swift */,
+				0C231F7F8EC8D063305BC913 /* ModelContainer+TABi.swift */,
+				387F0FE1A0FD020D65CEDEF1 /* SeedData.swift */,
+				0587D98A5E2F48F77C7A3969 /* VisitStore.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		2844398171A8A9500D5553F8 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				189414A9A39C9E6626FFE00C /* CameraCapturing.swift */,
+				3EDD34C35DA969C6B8162848 /* MockCamera.swift */,
+				F6BCA2C9865CF8EC0E05DC3D /* RealCamera.swift */,
+				255C17153BEB97FB5989EDC1 /* TABiFilmProcessor.swift */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		2FC1F97D8039B5D881B7225A /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				C7375EB3FBE619F46920C164 /* CameraView.swift */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		4439E987627EB6F51A437CFD /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				2A819E004D868732393D891C /* Memory.swift */,
+				92ADE9C2653A9E683A4C46D2 /* PlaceComponents.swift */,
+				6176FFE7EF6A7690A6CE25A2 /* Trip.swift */,
+				AE7B2A4E562D7D4E8D209BA9 /* Visit.swift */,
+				DAAFD83B398C5339B09E344D /* VisitStatus.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
 		615E37F407D93738556F20D9 /* TABi */ = {
 			isa = PBXGroup;
 			children = (
 				98131906F4E9F61BD8C211E3 /* Info.plist */,
 				09F46F52FAAFA7705707030C /* App */,
+				2844398171A8A9500D5553F8 /* Camera */,
+				4439E987627EB6F51A437CFD /* Domain */,
+				0946CDE8675B50C24011C7D0 /* Export */,
 				9A88DF39FB09AEA2D1BDCDD6 /* Features */,
+				F6D523858B23C7741BC9EFD2 /* Location */,
 				9D395C2483833048D5A83159 /* Map */,
+				11EEAF3EFFC244B81BFEF790 /* Persistence */,
 			);
 			path = TABi;
+			sourceTree = "<group>";
+		};
+		7403AA1EC74BE3D050BB2726 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0455FE5037FC2668A0B65988 /* japan_prefectures.geojson */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		79B950D7F58E829A804DD13F /* Memories */ = {
+			isa = PBXGroup;
+			children = (
+				F39A9F6A3E0B78781BBDE727 /* MemoriesView.swift */,
+				7A4999DA4DB09B2FB3C5C36E /* PhotoDetailView.swift */,
+			);
+			path = Memories;
+			sourceTree = "<group>";
+		};
+		7B4C7D2BBD64461850F3B98F /* Atlas */ = {
+			isa = PBXGroup;
+			children = (
+				CE6C90BB2ACDE4CC841D8EC4 /* AtlasView.swift */,
+				E03A4B73896857B889299B1A /* DrillDownViews.swift */,
+			);
+			path = Atlas;
+			sourceTree = "<group>";
+		};
+		85CF589FBA521DBBF242D5F4 /* Place */ = {
+			isa = PBXGroup;
+			children = (
+				4B1D4A3AB446F4885895E668 /* MemoryGridView.swift */,
+			);
+			path = Place;
 			sourceTree = "<group>";
 		};
 		9A88DF39FB09AEA2D1BDCDD6 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				7B4C7D2BBD64461850F3B98F /* Atlas */,
+				2FC1F97D8039B5D881B7225A /* Camera */,
+				79B950D7F58E829A804DD13F /* Memories */,
+				85CF589FBA521DBBF242D5F4 /* Place */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -72,6 +235,10 @@
 		9D395C2483833048D5A83159 /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				AFC9AEDF58FA650169E90477 /* JapanGeography.swift */,
+				F7E666C429D697E3EAB6EE91 /* JapanGeographyTypes.swift */,
+				B58247C944448A6BF6B5B0D5 /* README.md */,
+				7403AA1EC74BE3D050BB2726 /* Resources */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -104,10 +271,25 @@
 			);
 			sourceTree = "<group>";
 		};
+		F6D523858B23C7741BC9EFD2 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				4CB8EA8302B69BD6CD241B51 /* LocationProvider.swift */,
+				A35C18BAB632FF32174DA801 /* MockLocationProvider.swift */,
+				BE8AAF8852A7AA3C73DB60B0 /* PlaceResolver.swift */,
+				34DB9E61925A226EB2282FD8 /* RealLocationProvider.swift */,
+				214610298AC63FCB49871C21 /* RecentLocationStore.swift */,
+				C5145833F332BCFB0C64274B /* VisitDetector.swift */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
 		FBD72B09ABD80A0F6733E595 /* TABiTests */ = {
 			isa = PBXGroup;
 			children = (
 				BE93E8745504C48961ADAB46 /* DesignSystemTests.swift */,
+				8ECD21EEE8F3C566D4EDDC62 /* DomainStoreTests.swift */,
+				34577CC3FD106F7394300320 /* GeographyTests.swift */,
 			);
 			path = TABiTests;
 			sourceTree = "<group>";
@@ -120,6 +302,7 @@
 			buildConfigurationList = ADACCC65514BE120CD947629 /* Build configuration list for PBXNativeTarget "TABi" */;
 			buildPhases = (
 				ACBE61DD988175B6F9D1E06F /* Sources */,
+				BEC527A9AFD827156FE2F0BD /* Resources */,
 			);
 			buildRules = (
 			);
@@ -181,17 +364,59 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		BEC527A9AFD827156FE2F0BD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2EB5860821940C132BA52047 /* README.md in Resources */,
+				0B2D28221D62ED76EB501D5E /* japan_prefectures.geojson in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		ACBE61DD988175B6F9D1E06F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09FC947D2F81F61575D2CA1D /* AppEnvironment.swift in Sources */,
+				97C23DD521958A7D944FCD63 /* AtlasView.swift in Sources */,
+				050D4FCE3567436CC42312F5 /* CameraCapturing.swift in Sources */,
+				71F600101916725E4D23D3B9 /* CameraView.swift in Sources */,
 				2C8F29E8B3398871B741F5D0 /* Colors.swift in Sources */,
+				8980FCA3A443C999627102C5 /* DrillDownViews.swift in Sources */,
+				78C0D5D32EA49DA931AD2F9A /* JapanGeography.swift in Sources */,
+				BDC6F03D33053312AFA5BAA6 /* JapanGeographyTypes.swift in Sources */,
+				6E41526114CE04E97D40285B /* LocationProvider.swift in Sources */,
+				A60CFA711618A71BD50FFFC0 /* MemoriesView.swift in Sources */,
+				5E585F715AD3E9A08DDC7F59 /* Memory.swift in Sources */,
+				341353D9B7D59CE49037F5D5 /* MemoryFileStore.swift in Sources */,
+				156B9D0146BB80AA61A28C05 /* MemoryGridView.swift in Sources */,
+				ACED724EF6C1F301319A0294 /* MemoryStore.swift in Sources */,
+				18BE0FA4A72E5E3A2BF001FC /* MockCamera.swift in Sources */,
+				D0AA824D9002E0EE33424A88 /* MockLocationProvider.swift in Sources */,
+				E94FB189F2D1238CC69E4FDC /* ModelContainer+TABi.swift in Sources */,
+				FA979D77DD5DEF7928530580 /* PhotoDetailView.swift in Sources */,
+				E63D7708A91BEC82ADEEB8AC /* PhotoLibraryExporting.swift in Sources */,
+				0F522645BD43C45B09C445E3 /* PlaceComponents.swift in Sources */,
+				D614FB3D12252D3752127DAD /* PlaceResolver.swift in Sources */,
+				09A45FB14787508A7712AF7A /* RealCamera.swift in Sources */,
+				DCC4407C892F4018816180DD /* RealLocationProvider.swift in Sources */,
+				90DD0F9F1453F54D9B5F49EA /* RecentLocationStore.swift in Sources */,
 				036E2C742558414483DFE132 /* RootView.swift in Sources */,
+				5B84C23BF4A2A12C3D78CE03 /* SeedData.swift in Sources */,
 				A15C80B9C33481D81C9A4756 /* Spacing.swift in Sources */,
 				C15640C3F2FD75A4CBC6C2A1 /* SplashView.swift in Sources */,
 				61C43AC8BD51DFB06D8990E2 /* TABIApp.swift in Sources */,
+				90CE1A2999CEB4C2028223A3 /* TABiFilmProcessor.swift in Sources */,
+				692CAA56D1537E18F6BA3C1D /* Trip.swift in Sources */,
 				210DF3F5663BAA53AFBD4065 /* Typography.swift in Sources */,
+				C47FCA50220933126F933F65 /* Visit.swift in Sources */,
+				BC426A5365D016D4E464F111 /* VisitDetector.swift in Sources */,
+				B6586682F5C5F59D5A9B41A4 /* VisitStatus.swift in Sources */,
+				B23EF1923EB6937706B3D01E /* VisitStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,6 +425,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E24EEE3C2FE10FF45F360A2 /* DesignSystemTests.swift in Sources */,
+				6C8B75F46ED8749685FBB1FB /* DomainStoreTests.swift in Sources */,
+				18860BFCB58742DA34612135 /* GeographyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

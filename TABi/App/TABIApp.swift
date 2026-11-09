@@ -1,8 +1,20 @@
 import SwiftUI
+import SwiftData
 
 @main
 struct TABiApp: App {
     @State private var isSplashVisible = true
+    @State private var environment: AppEnvironment
+
+    init() {
+        let container: ModelContainer
+        do {
+            container = try ModelContainerFactory.make()
+        } catch {
+            fatalError("Failed to open TABi store: \(error)")
+        }
+        _environment = State(initialValue: AppEnvironment(container: container))
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -11,6 +23,7 @@ struct TABiApp: App {
                     SplashView()
                 } else {
                     RootView()
+                        .environment(environment)
                 }
             }
             .task {
