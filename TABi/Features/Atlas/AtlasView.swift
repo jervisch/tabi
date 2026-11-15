@@ -68,28 +68,24 @@ struct AtlasView: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-            VStack(spacing: 0) {
-                header
-
-                IllustratedJapanMapView(
-                    visitedCities: visibleCityMarkers,
-                    visitedPrefectureCounts: visitedPrefectureCounts,
-                    currentCoordinate: env.currentSample.map {
-                        CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
-                    },
-                    isInJapan: isInJapan,
-                    onSelectPrefecture: { shape in
-                        path.append(PrefectureRoute(
-                            id: shape.id,
-                            nameEn: shape.nameEn,
-                            nameJa: shape.nameJa
-                        ))
-                    }
-                )
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                // Clear the bottom navigation — the map remains the page.
-                .padding(.bottom, 72)
-            }
+            IllustratedJapanMapView(
+                visitedCities: visibleCityMarkers,
+                visitedPrefectureCounts: visitedPrefectureCounts,
+                currentCoordinate: env.currentSample.map {
+                    CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
+                },
+                isInJapan: isInJapan,
+                onSelectPrefecture: { shape in
+                    path.append(PrefectureRoute(
+                        id: shape.id,
+                        nameEn: shape.nameEn,
+                        nameJa: shape.nameJa
+                    ))
+                }
+            )
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            // Clear the bottom navigation — the map remains the page.
+            .padding(.bottom, 72)
             .washiBackground()
             .navigationDestination(for: PrefectureRoute.self) { route in
                 PrefectureDetailView(route: route, path: $path)
@@ -104,29 +100,6 @@ struct AtlasView: View {
                 await env.refreshCurrentLocation()
             }
         }
-    }
-
-    /// Quiet journal title — no decoration, no cards.
-    private var header: some View {
-        VStack(spacing: 8) {
-            HStack(spacing: 10) {
-                Text("旅")
-                    .font(TABiFont.title(28))
-                    .foregroundStyle(TABiColor.sumi)
-
-                Text("TABI")
-                    .font(TABiFont.placeEnglish(15, weight: .semibold))
-                    .tracking(6)
-                    .foregroundStyle(TABiColor.sumi.opacity(0.7))
-            }
-
-            Text(env.atlasStats.caption)
-                .font(TABiFont.caption(12))
-                .foregroundStyle(TABiColor.sumi.opacity(0.55))
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.top, 18)
-        .padding(.bottom, 14)
     }
 }
 

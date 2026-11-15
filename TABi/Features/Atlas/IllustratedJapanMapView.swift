@@ -16,7 +16,7 @@ struct IllustratedJapanMapView: View {
 
     @State private var pulse = false
 
-    private static let mapAspect: CGFloat = 1430.0 / 2048.0
+    private static let mapAspect: CGFloat = 1024.0 / 1536.0
     private static let insetAspect: CGFloat = 512.0 / 407.0
 
     private var mainShapes: [PrefectureShape] {
@@ -44,8 +44,8 @@ struct IllustratedJapanMapView: View {
             let insetArt = Self.aspectFit(Self.insetAspect, in: insetRect)
 
             ZStack(alignment: .topLeading) {
-                // ── The hero (baked-in decorative green recolored to land) ─
-                Image(uiImage: MapArt.cleanedBase)
+                // ── The hero: the illustrated page itself ─
+                Image("japan_map_base")
                     .resizable()
                     .frame(width: mapRect.width, height: mapRect.height)
                     .position(x: mapRect.midX, y: mapRect.midY)
@@ -264,72 +264,4 @@ private struct PrefectureFillsShape: Shape {
         }
         return path
     }
-}
-
-// MARK: - Map art
-
-/// The base illustration, prepared for the visit-state layer.
-///
-/// The artwork ships with decorative moss-green terrain patches that read as
-/// "visited" but aren't — `cleanedBase` recolors those greens to the land
-/// cream so **green on the map only ever means "we were here"** (see
-/// `visitedPrefectureFills`). One-time cost, cached for the app session.
-enum MapArt {
-    static let cleanedBase: UIImage = {
-        guard let image = UIImage(named: "japan_map_base"),
-              let cg = image.cgImage else {
-            return UIImage(named: "japan_map_base") ?? UIImage()
-        }
-        let width = cg.width, height = cg.height
-        guard let context = CGContext(
-            data: nil,
-            width: width,
-            height: height,
-            bitsPerComponent: 8,
-            bytesPerRow: width * 4,
-            space: CGColorSpaceCreateDeviceRGB(),
-            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
-                | CGBitmapInfo.byteOrder32Big.rawValue
-        ) else { return image }
-
-        context.draw(cg, in: CGRect(x: 0, y: 0, width: width, height: height))
-        guard let data = context.data else { return image }
-        let px = data.bindMemory(to: UInt8.self, capacity: width * height * 4)
-
-        // Average land cream sampled from the artwork.
-        let creamR = 235.0, creamG = 226.0, creamB = 208.0
-        let blend = 0.95
-        var i = 0
-        let end = width * height * 4
-        while i < end {
-            let r = Double(px[i]), g = Double(px[i + 1]), b = Double(px[i + 2])
-            let mx = max(r, max(g, b)), mn = min(r, min(g, b))
-            let chroma = mx - mn
-            // mx > 150 protects ink outlines and deep shadows (their greenish
-            // cast is pigment shading, not a terrain patch).
-            if chroma > 3, mx > 150 {
-                let saturation = chroma / mx
-                var hue: Double
-                if mx == r {
-                    hue = 60 * ((g - b) / chroma)
-                    if hue < 0 { hue += 360 }
-                } else if mx == g {
-                    hue = 60 * ((b - r) / chroma + 2)
-                } else {
-                    hue = 60 * ((r - g) / chroma + 4)
-                }
-                // Green band: moss/sage (≈75°) and olive-khaki (≈46°), at any
-                // strength. Cream paper ≈36°, tan edges ≈40°, sea ≈200°.
-                if hue >= 44, hue <= 160, saturation > 0.09 {
-                    px[i]     = UInt8(min(255, r + (creamR - r) * blend))
-                    px[i + 1] = UInt8(min(255, g + (creamG - g) * blend))
-                    px[i + 2] = UInt8(min(255, b + (creamB - b) * blend))
-                }
-            }
-            i += 4
-        }
-
-        guard let out = context.makeImage() else { return image }
-        return UIImage(cgImage: out, scale: image.scale, orientation: image.imageOrientation)
-    }()
 }
