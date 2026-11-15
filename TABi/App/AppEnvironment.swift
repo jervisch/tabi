@@ -18,6 +18,7 @@ final class AppEnvironment {
 
     private(set) var atlasStats: AtlasStats = .empty
     private(set) var currentComponents: PlaceComponents?
+    private(set) var currentSample: LocationSample?
     private(set) var lastSavedMemory: Memory?
     private(set) var lastSavedImage: UIImage?
     private(set) var showMemorySavedCard = false
@@ -54,6 +55,7 @@ final class AppEnvironment {
         _ = try? await locationProvider.requestWhenInUseAuthorization()
         guard let sample = await locationProvider.currentSample() else { return }
         RecentLocationStore.shared.append(sample)
+        currentSample = sample
         currentComponents = await placeResolver.resolve(sample: sample)
     }
 

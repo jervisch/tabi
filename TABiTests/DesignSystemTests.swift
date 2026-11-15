@@ -8,6 +8,15 @@ private struct RGBA: Equatable {
     let a: Int
 }
 
+struct RGBATuple: Equatable {
+    let r: Int, g: Int, b: Int, a: Int
+}
+
+import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
+
 final class DesignSystemTests: XCTestCase {
     private func rgba(hex: UInt32) -> RGBA {
         RGBA(
@@ -19,33 +28,31 @@ final class DesignSystemTests: XCTestCase {
     }
 
     func testDesignTokenHexValues() {
-        XCTAssertEqual(rgba(hex: TABiColor.washiHex), RGBA(r: 245, g: 241, b: 232, a: 255), "Washi #F5F1E8")
-        XCTAssertEqual(rgba(hex: TABiColor.sumiHex), RGBA(r: 37, g: 37, b: 37, a: 255), "Sumi #252525")
-        XCTAssertEqual(rgba(hex: TABiColor.mossHex), RGBA(r: 104, g: 112, b: 90, a: 255), "Moss #68705A")
-        XCTAssertEqual(rgba(hex: TABiColor.indigoHex), RGBA(r: 38, g: 56, b: 74, a: 255), "Indigo #26384A")
-        XCTAssertEqual(rgba(hex: TABiColor.vermilionHex), RGBA(r: 201, g: 87, b: 69, a: 255), "Vermilion #C95745")
+        XCTAssertEqual(rgba(hex: TABiColor.washiHex), RGBA(r: 0xF6, g: 0xF0, b: 0xE4, a: 255), "Washi #F6F0E4")
+        XCTAssertEqual(rgba(hex: TABiColor.sumiHex), RGBA(r: 0x34, g: 0x31, b: 0x2C, a: 255), "Sumi #34312C")
+        XCTAssertEqual(rgba(hex: TABiColor.indigoHex), RGBA(r: 0x55, g: 0x7C, b: 0x91, a: 255), "Indigo #557C91")
+        XCTAssertEqual(rgba(hex: TABiColor.skyHex), RGBA(r: 0x8F, g: 0xC5, b: 0xD8, a: 255), "Sky #8FC5D8")
+        XCTAssertEqual(rgba(hex: TABiColor.mossHex), RGBA(r: 0x8F, g: 0xA4, b: 0x77, a: 255), "Moss #8FA477")
+        XCTAssertEqual(rgba(hex: TABiColor.peachHex), RGBA(r: 0xE9, g: 0xA5, b: 0x9A, a: 255), "Peach #E9A59A")
+        XCTAssertEqual(rgba(hex: TABiColor.vermilionHex), RGBA(r: 0xC9, g: 0x5B, b: 0x45, a: 255), "Vermilion #C95B45")
+        XCTAssertEqual(rgba(hex: TABiColor.sandHex), RGBA(r: 0xDC, g: 0xC8, b: 0xA5, a: 255), "Sand #DCC8A5")
     }
 
     func testColorHexInitMatchesTokenComponents() {
-        XCTAssertEqual(TABiColor.washi.rgba255, RGBATuple(r: 245, g: 241, b: 232, a: 255))
-        XCTAssertEqual(TABiColor.sumi.rgba255, RGBATuple(r: 37, g: 37, b: 37, a: 255))
-        XCTAssertEqual(TABiColor.moss.rgba255, RGBATuple(r: 104, g: 112, b: 90, a: 255))
-        XCTAssertEqual(TABiColor.indigo.rgba255, RGBATuple(r: 38, g: 56, b: 74, a: 255))
-        XCTAssertEqual(TABiColor.vermilion.rgba255, RGBATuple(r: 201, g: 87, b: 69, a: 255))
+        XCTAssertEqual(TABiColor.washi.rgba255, RGBATuple(r: 0xF6, g: 0xF0, b: 0xE4, a: 255))
+        XCTAssertEqual(TABiColor.sumi.rgba255, RGBATuple(r: 0x34, g: 0x31, b: 0x2C, a: 255))
+        XCTAssertEqual(TABiColor.moss.rgba255, RGBATuple(r: 0x8F, g: 0xA4, b: 0x77, a: 255))
+        XCTAssertEqual(TABiColor.vermilion.rgba255, RGBATuple(r: 0xC9, g: 0x5B, b: 0x45, a: 255))
+        XCTAssertEqual(TABiColor.indigo.rgba255, RGBATuple(r: 0x55, g: 0x7C, b: 0x91, a: 255))
+        XCTAssertEqual(TABiColor.sky.rgba255, RGBATuple(r: 0x8F, g: 0xC5, b: 0xD8, a: 255))
+        XCTAssertEqual(TABiColor.peach.rgba255, RGBATuple(r: 0xE9, g: 0xA5, b: 0x9A, a: 255))
+        XCTAssertEqual(TABiColor.sand.rgba255, RGBATuple(r: 0xDC, g: 0xC8, b: 0xA5, a: 255))
     }
-}
 
-import SwiftUI
-#if canImport(UIKit)
-import UIKit
-#endif
-
-struct RGBATuple: Equatable {
-    let r: Int, g: Int, b: Int, a: Int
+    var rgba255: RGBATuple { (0, 0, 0, 0) }
 }
 
 extension Color {
-    /// Resolved sRGB components as 0–255, compared via `rgbTuple`.
     var rgba255: RGBATuple {
         #if canImport(UIKit)
         var r: CGFloat = 0

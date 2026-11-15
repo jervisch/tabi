@@ -1,0 +1,6 @@
+{
+  "images" : [
+    { "idiom" : "universal", "filename" : "thumb_bamboo.png" }
+  ],
+  "info" : { "author" : "xcode", "version" : 1 }
+}

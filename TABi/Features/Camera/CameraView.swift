@@ -66,15 +66,21 @@ struct CameraView: View {
     }
 
     private var placeLabel: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: 6) {
             if let components = env.currentComponents {
-                Text(labelEnglish(components))
-                    .font(TABiFont.placeEnglish(17))
-                    .foregroundStyle(.white)
-                    .tracking(2)
-                Text(labelJapanese(components))
-                    .font(TABiFont.placeJapanese(15))
-                    .foregroundStyle(.white.opacity(0.7))
+                // Board order: 京都 / Kyoto then 祇園 / Gion
+                if let city = components.city {
+                    bilingualLine(ja: city, en: components.prefecture ?? "", large: true)
+                } else if let pref = components.prefecture {
+                    bilingualLine(ja: pref, en: components.country ?? "", large: true)
+                }
+                if let place = components.placeName {
+                    bilingualLine(
+                        ja: place,
+                        en: components.city ?? "",
+                        large: false
+                    )
+                }
             } else {
                 Text("LOCATING…")
                     .font(TABiFont.placeEnglish(15))
@@ -88,21 +94,17 @@ struct CameraView: View {
         .shadow(color: .black.opacity(0.4), radius: 6, y: 1)
     }
 
-    private func labelEnglish(_ c: PlaceComponents) -> String {
-        if let city = c.city, let place = c.placeName {
-            return "\(city.uppercased()) / \(place.uppercased())"
+    private func bilingualLine(ja: String, en: String, large: Bool) -> some View {
+        HStack(spacing: 6) {
+            Text(ja)
+                .font(TABiFont.placeJapanese(large ? 20 : 15))
+                .foregroundStyle(.white)
+            if !en.isEmpty {
+                Text("/ \(en)")
+                    .font(TABiFont.placeEnglish(large ? 15 : 12))
+                    .foregroundStyle(.white.opacity(0.7))
+            }
         }
-        if let city = c.city { return city.uppercased() }
-        if let prefecture = c.prefecture { return prefecture.uppercased() }
-        return "SOMEWHERE"
-    }
-
-    private func labelJapanese(_ c: PlaceComponents) -> String {
-        var parts: [String] = []
-        if let prefecture = c.prefecture { parts.append(prefecture) }
-        if let place = c.placeName { parts.append(place) }
-        if parts.isEmpty { return "どこか" }
-        return parts.joined(separator: " · ")
     }
 
     private var shutterArea: some View {
@@ -123,14 +125,15 @@ struct CameraView: View {
             } label: {
                 ZStack {
                     Circle()
-                        .stroke(.white, lineWidth: 3)
-                        .frame(width: 72, height: 72)
+                        .fill(TABiColor.vermilion)
+                        .frame(width: 66, height: 66)
+                        .shadow(color: TABiColor.vermilion.opacity(0.5), radius: 10, y: 2)
                     Circle()
-                        .fill(.white)
-                        .frame(width: 60, height: 60)
+                        .stroke(TABiColor.washi, lineWidth: 3)
+                        .frame(width: 74, height: 74)
                     if capturing {
                         ProgressView()
-                            .tint(.black)
+                            .tint(.white)
                     }
                 }
             }

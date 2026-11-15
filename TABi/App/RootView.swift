@@ -6,17 +6,26 @@ enum RootTab: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
-    var title: String {
+    /// Japanese primary / English secondary (design kit nav).
+    var titleJa: String {
+        switch self {
+        case .atlas: "地図"
+        case .memories: "思い出"
+        }
+    }
+
+    var titleEn: String {
         switch self {
         case .atlas: "Atlas"
         case .memories: "Memories"
         }
     }
 
-    var systemImage: String {
+    /// Asset-catalog illustration for the bottom bar.
+    var iconAsset: String {
         switch self {
-        case .atlas: "map"
-        case .memories: "photo.on.rectangle"
+        case .atlas: "nav_atlas"
+        case .memories: "nav_memories"
         }
     }
 }
@@ -46,50 +55,66 @@ struct RootView: View {
         }
     }
 
+    /// Quiet, editorial — illustrations sitting on washi, labels set beneath.
+    /// No containers, no selection backgrounds: state = opacity + slight scale.
     private var tabBar: some View {
-        HStack(spacing: 0) {
+        HStack(alignment: .top, spacing: 0) {
             tabButton(.atlas)
 
             Button {
                 isCameraPresented = true
             } label: {
-                ZStack {
-                    Circle()
-                        .fill(TABiColor.sumi)
-                        .frame(width: 56, height: 56)
-                    Image(systemName: "camera")
-                        .font(.system(size: 20, weight: .medium))
-                        .foregroundStyle(TABiColor.washi)
-                }
+                Image("nav_camera")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 32)
+                    // Centered on the illustration row; the focal point.
+                    .offset(y: -4)
             }
             .accessibilityLabel("Camera")
-            .padding(.horizontal, 24)
-            .offset(y: -8)
+            .padding(.horizontal, 30)
 
             tabButton(.memories)
         }
-        .padding(.top, 10)
-        .padding(.bottom, 8)
-        .background(
-            TABiColor.washi
-                .shadow(color: .black.opacity(0.06), radius: 8, y: -2)
-                .ignoresSafeArea(edges: .bottom)
-        )
+        .padding(.top, 12)
+        .padding(.bottom, 12)
+        .background(TABiColor.washi.ignoresSafeArea(edges: .bottom))
+        .overlay(alignment: .top) {
+            Rectangle()
+                .fill(TABiColor.sumi.opacity(0.12))
+                .frame(height: 0.5)
+        }
     }
 
     private func tabButton(_ tab: RootTab) -> some View {
-        Button {
+        let selected = selection == tab
+        return Button {
             selection = tab
         } label: {
-            VStack(spacing: 4) {
-                Image(systemName: tab.systemImage)
-                    .font(.system(size: 18, weight: .regular))
-                Text(tab.title)
-                    .font(.system(size: 10, weight: .medium))
+            VStack(spacing: 6) {
+                Image(tab.iconAsset)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 24)
+                    .opacity(selected ? 1.0 : 0.55)
+                    .scaleEffect(selected ? 1.0 : 0.96)
+                    .animation(.easeOut(duration: 0.15), value: selected)
+
+                // Labels live apart from the illustration.
+                VStack(spacing: 1) {
+                    Text(tab.titleJa)
+                        .font(TABiFont.placeJapanese(10, weight: selected ? .medium : .regular))
+                        .foregroundStyle(TABiColor.sumi.opacity(selected ? 0.85 : 0.5))
+
+                    Text(tab.titleEn)
+                        .font(TABiFont.placeEnglish(8))
+                        .tracking(0.8)
+                        .foregroundStyle(TABiColor.sumi.opacity(selected ? 0.55 : 0.35))
+                }
             }
-            .foregroundStyle(selection == tab ? TABiColor.sumi : TABiColor.sumi.opacity(0.4))
             .frame(maxWidth: .infinity)
         }
-        .accessibilityAddTraits(selection == tab ? .isSelected : [])
+        .accessibilityLabel(tab.titleEn)
+        .accessibilityAddTraits(selected ? .isSelected : [])
     }
 }

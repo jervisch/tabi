@@ -38,20 +38,27 @@ Accounts · social · following · recommendations · itineraries · weather · 
 
 ## Design tokens
 
+Authoritative source: `TABi_design_kit/design/DESIGN.md` + `ASSET_MANIFEST.json`.
+
 | Token | Hex |
 |-------|-----|
-| Washi | `#F5F1E8` |
-| Sumi | `#252525` |
-| Moss | `#68705A` |
-| Indigo | `#26384A` |
-| Vermilion | `#C95745` (sparingly) |
+| Washi | `#F6F0E4` |
+| Sumi | `#34312C` |
+| Indigo | `#557C91` |
+| Sky | `#8FC5D8` |
+| Moss | `#8FA477` |
+| Peach | `#E9A59A` |
+| Vermilion | `#C95B45` |
+| Sand | `#DCC8A5` |
 
-- English primary / Japanese secondary on camera place labels  
+- No iOS blue accents · no default MapKit basemap · no default iOS tab bar  
+- English primary / Japanese secondary where appropriate; bilingual place names (e.g. 京都 / Kyoto)  
 - Atlas stats: `N / 47 prefectures · M cities`  
-- Outside Japan: human figure + “Exploring somewhere else in the world”  
+- Outside Japan: illustrated **Elsewhere** island (atlas remains visible)  
 - 旅/TABI: splash only  
 - After capture: polaroid “Memory saved” card  
 - Memories: Year → Trip; filters location + time  
+- Nav: 地図 Atlas · large vermilion camera · 思い出 Memories  
 
 ## V1 technical decisions
 

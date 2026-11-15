@@ -1,0 +1,6 @@
+{
+  "images" : [
+    { "idiom" : "universal", "filename" : "stamp_visited.png" }
+  ],
+  "info" : { "author" : "xcode", "version" : 1 }
+}

@@ -1,0 +1,6 @@
+{
+  "images" : [
+    { "idiom" : "universal", "filename" : "thumb_house.png" }
+  ],
+  "info" : { "author" : "xcode", "version" : 1 }
+}

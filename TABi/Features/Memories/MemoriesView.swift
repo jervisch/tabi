@@ -62,7 +62,7 @@ struct MemoriesView: View {
                 .padding(.vertical, TABiSpacing.md)
             }
             .background(TABiColor.washi.ignoresSafeArea())
-            .navigationTitle("Memories")
+            .navigationTitle("思い出 Memories")
             .toolbarBackground(TABiColor.washi, for: .navigationBar)
             .sheet(item: $selected) { memory in
                 PhotoDetailView(memory: memory)
@@ -201,9 +201,11 @@ struct MemoriesFilterView: View {
                     }
                 }
             }
+            .scrollContentBackground(.hidden)
             .background(TABiColor.washi)
             .navigationTitle("Filter")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(TABiColor.washi, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }

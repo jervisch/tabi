@@ -16,6 +16,12 @@ targets:
     platform: iOS
     sources:
       - path: TABi
+        excludes:
+          - "Fonts/**"
+      - path: TABi/Fonts
+        buildPhase: resources
+        excludes:
+          - "**/*.md"
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.tabi.app

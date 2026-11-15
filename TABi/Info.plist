@@ -28,6 +28,15 @@
 	<string>TABi uses your location while the app is open to place memories on your atlas.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>TABi can optionally save processed memories to your photo library.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>NotoSerifJP-Regular.otf</string>
+		<string>NotoSerifJP-Medium.otf</string>
+		<string>NotoSansJP-Regular.otf</string>
+		<string>NotoSansJP-Medium.otf</string>
+		<string>EBGaramond-Regular.ttf</string>
+		<string>EBGaramond-SemiBold.ttf</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

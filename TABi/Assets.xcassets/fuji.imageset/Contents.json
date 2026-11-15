@@ -1,0 +1,6 @@
+{
+  "images" : [
+    { "idiom" : "universal", "filename" : "fuji.png" }
+  ],
+  "info" : { "author" : "xcode", "version" : 1 }
+}
