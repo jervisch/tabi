@@ -109,13 +109,16 @@ struct IllustratedJapanMapView: View {
 
                     // Dot sits exactly on the coordinate; label hangs below.
                     markDot
+                        .transition(.opacity)
                         .position(x: pt.x, y: pt.y)
 
                     editorialLabel(ja: city.nameJa, en: city.nameEn)
+                        .transition(.opacity)
                         .position(x: pt.x, y: pt.y + 38)
                 }
             }
         }
+        .animation(.easeOut(duration: 0.35), value: visitedCities.count)
         .allowsHitTesting(false)
     }
 

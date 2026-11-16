@@ -33,6 +33,7 @@ enum RootTab: String, CaseIterable, Identifiable {
 struct RootView: View {
     @State private var selection: RootTab = .atlas
     @State private var isCameraPresented = false
+    @State private var isCameraPressed = false
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -72,6 +73,7 @@ struct RootView: View {
                     .offset(y: -4)
             }
             .accessibilityLabel("Camera")
+            .buttonStyle(PressableStyle(isPressed: $isCameraPressed))
             .padding(.horizontal, 30)
 
             tabButton(.memories)
@@ -116,5 +118,16 @@ struct RootView: View {
         }
         .accessibilityLabel(tab.titleEn)
         .accessibilityAddTraits(selected ? .isSelected : [])
+    }
+}
+
+struct PressableStyle: ButtonStyle {
+    @Binding var isPressed: Bool
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.94 : 1.0)
+            .opacity(configuration.isPressed ? 0.85 : 1)
+            .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
     }
 }
