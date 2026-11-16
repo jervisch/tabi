@@ -4,14 +4,14 @@ struct SplashView: View {
     var body: some View {
         ZStack {
             TABiColor.washi.ignoresSafeArea()
-            VStack(spacing: 12) {
+            VStack(spacing: 14) {
                 Text("旅")
-                    .font(.system(size: 72, weight: .light, design: .serif))
+                    .font(TABiFont.title(84))
                     .foregroundStyle(TABiColor.sumi)
-                Text("TABI")
-                    .font(.system(size: 14, weight: .medium, design: .default))
-                    .tracking(8)
-                    .foregroundStyle(TABiColor.sumi.opacity(0.7))
+                Text("TABi")
+                    .font(TABiFont.placeEnglish(16, weight: .medium))
+                    .tracking(10)
+                    .foregroundStyle(TABiColor.sumi.opacity(0.65))
             }
         }
     }
