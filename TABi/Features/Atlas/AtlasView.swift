@@ -56,26 +56,57 @@ struct AtlasView: View {
         return s
     }
 
+    /// Printed-on-the-atlas progress note. No card, no pill, no shadow.
+    private var statsAnnotation: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 1) {
+                Text("\(env.atlasStats.prefectures) / 47")
+                    .font(TABiFont.placeEnglish(20, weight: .medium))
+                    .foregroundStyle(TABiColor.sumi.opacity(0.7))
+                Text("PREFECTURES")
+                    .font(TABiFont.caption(8, weight: .medium))
+                    .tracking(2)
+                    .foregroundStyle(TABiColor.sumi.opacity(0.4))
+            }
+            VStack(alignment: .leading, spacing: 1) {
+                Text("\(env.atlasStats.cities)")
+                    .font(TABiFont.placeEnglish(20, weight: .medium))
+                    .foregroundStyle(TABiColor.sumi.opacity(0.7))
+                Text("CITIES")
+                    .font(TABiFont.caption(8, weight: .medium))
+                    .tracking(2)
+                    .foregroundStyle(TABiColor.sumi.opacity(0.4))
+            }
+        }
+        .allowsHitTesting(false)
+    }
+
     var body: some View {
         NavigationStack(path: $path) {
-            IllustratedJapanMapView(
-                visitedCities: visibleCityMarkers,
-                currentCoordinate: env.currentSample.map {
-                    CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
-                },
-                isInJapan: isInJapan,
-                onSelectPrefecture: { shape in
-                    path.append(PrefectureRoute(
-                        id: shape.id,
-                        nameEn: shape.nameEn,
-                        nameJa: shape.nameJa
-                    ))
-                }
-            )
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            // Clear the bottom navigation — the map remains the page.
-            .padding(.bottom, 72)
-            .washiBackground()
+            ZStack(alignment: .topLeading) {
+                IllustratedJapanMapView(
+                    visitedCities: visibleCityMarkers,
+                    currentCoordinate: env.currentSample.map {
+                        CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
+                    },
+                    isInJapan: isInJapan,
+                    onSelectPrefecture: { shape in
+                        path.append(PrefectureRoute(
+                            id: shape.id,
+                            nameEn: shape.nameEn,
+                            nameJa: shape.nameJa
+                        ))
+                    }
+                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                // Clear the bottom navigation — the map remains the page.
+                .padding(.bottom, 72)
+                .washiBackground()
+
+                statsAnnotation
+                    .padding(.leading, 20)
+                    .padding(.top, 170)
+            }
             .navigationDestination(for: PrefectureRoute.self) { route in
                 PrefectureDetailView(route: route, path: $path)
             }
