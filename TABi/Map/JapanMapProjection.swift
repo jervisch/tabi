@@ -46,10 +46,6 @@ struct JapanMapProjection {
         lat >= mainMinLat && lat <= mainMaxLat && lon >= mainMinLon && lon <= mainMaxLon
     }
 
-    static func isInOkinawaBounds(_ lat: Double, _ lon: Double) -> Bool {
-        lat >= insetMinLat && lat <= insetMaxLat && lon >= insetMinLon && lon <= insetMaxLon
-    }
-
     static func centroid(of ring: [CLLocationCoordinate2D]) -> CLLocationCoordinate2D? {
         guard !ring.isEmpty else { return nil }
         var lat = 0.0

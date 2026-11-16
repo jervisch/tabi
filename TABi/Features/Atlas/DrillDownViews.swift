@@ -29,6 +29,18 @@ private struct RowThumb: View {
     }
 }
 
+private struct RowChevron: View {
+    var body: some View {
+        Path { path in
+            path.move(to: CGPoint(x: 0, y: 0))
+            path.addLine(to: CGPoint(x: 6, y: 6))
+            path.addLine(to: CGPoint(x: 0, y: 12))
+        }
+        .stroke(TABiColor.sumi.opacity(0.3), style: StrokeStyle(lineWidth: 1.5, lineCap: .round, lineJoin: .round))
+        .frame(width: 12, height: 12)
+    }
+}
+
 private struct HeroBanner: View {
     let imageName: String
     var height: CGFloat = 150
@@ -117,21 +129,11 @@ struct PrefectureDetailView: View {
                                 .foregroundStyle(TABiColor.sumi.opacity(0.5))
                         }
                         Spacer()
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundStyle(TABiColor.sumi.opacity(0.3))
+                        RowChevron()
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 10)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(TABiColor.washi)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .stroke(TABiColor.sumi.opacity(0.1), lineWidth: 1)
-                    )
-                    .shadow(color: .black.opacity(0.04), radius: 4, y: 2)
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 .padding(.horizontal, TABiSpacing.lg)
@@ -226,21 +228,11 @@ struct CityDetailView: View {
                                 .foregroundStyle(TABiColor.sumi.opacity(0.5))
                         }
                         Spacer()
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundStyle(TABiColor.sumi.opacity(0.3))
+                        RowChevron()
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 10)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(TABiColor.washi)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .stroke(TABiColor.sumi.opacity(0.1), lineWidth: 1)
-                    )
-                    .shadow(color: .black.opacity(0.04), radius: 4, y: 2)
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 .padding(.horizontal, TABiSpacing.lg)

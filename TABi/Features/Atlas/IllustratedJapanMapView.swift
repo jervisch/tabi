@@ -200,7 +200,7 @@ struct IllustratedJapanMapView: View {
                 .multilineTextAlignment(.center)
                 .foregroundStyle(TABiColor.sumi.opacity(0.4))
         }
-        .position(x: area.maxX - 78, y: area.maxY - 96)
+        .position(x: min(area.maxX - 78, area.width - 20), y: min(area.maxY - 96, area.height - 60))
         .allowsHitTesting(false)
     }
 

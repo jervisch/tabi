@@ -49,9 +49,6 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertEqual(TABiColor.sand.rgba255, RGBATuple(r: 0xDC, g: 0xC8, b: 0xA5, a: 255))
     }
 
-    var rgba255: RGBATuple { (0, 0, 0, 0) }
-}
-
 extension Color {
     var rgba255: RGBATuple {
         #if canImport(UIKit)
