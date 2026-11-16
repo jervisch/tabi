@@ -10,6 +10,8 @@ struct IllustratedJapanMapView: View {
     let visitedCities: [CityPoint]
     let currentCoordinate: CLLocationCoordinate2D?
     let isInJapan: Bool
+    /// Okinawa inset only appears once the traveler has visited Okinawa.
+    var showsOkinawaInset: Bool = true
     var onSelectPrefecture: (PrefectureShape) -> Void = { _ in }
 
     @State private var pulse = false
@@ -73,8 +75,10 @@ struct IllustratedJapanMapView: View {
                             }
                     )
 
-                // ── Okinawa: quiet printed inset ─────────────────────────
-                okinawaInset(art: insetArt)
+                // ── Okinawa: quiet printed inset (only once visited) ──────
+                if showsOkinawaInset {
+                    okinawaInset(art: insetArt)
+                }
 
                 // ── Elsewhere (only when outside Japan) ──────────────────
                 if !isInJapan {

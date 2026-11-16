@@ -19,6 +19,14 @@ struct AtlasView: View {
         return true
     }
 
+    /// Okinawa inset only appears once the traveler has visited Okinawa.
+    private var hasVisitedOkinawa: Bool {
+        guard let okinawaID = Self.prefectureID(matching: "Okinawa") else { return false }
+        return env.confirmedVisits().contains {
+            Self.prefectureID(matching: $0.prefecture) == okinawaID
+        }
+    }
+
     /// Match a reverse-geocoded prefecture name ("Kyoto", "Hokkaido",
     /// "Tokyo Prefecture"…) to a GeoJSON shape ("Kyoto Fu", "Hokkai Do"…).
     private static func prefectureID(matching name: String) -> String? {
@@ -90,6 +98,7 @@ struct AtlasView: View {
                         CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
                     },
                     isInJapan: isInJapan,
+                    showsOkinawaInset: hasVisitedOkinawa,
                     onSelectPrefecture: { shape in
                         path.append(PrefectureRoute(
                             id: shape.id,
