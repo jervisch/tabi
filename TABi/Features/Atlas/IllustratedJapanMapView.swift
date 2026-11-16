@@ -8,8 +8,6 @@ import CoreLocation
 /// Hit-testing: geographic dataset via `JapanMapProjection` (authoritative).
 struct IllustratedJapanMapView: View {
     let visitedCities: [CityPoint]
-    /// Prefecture id → distinct visited cities (drives the graduated green fill).
-    var visitedPrefectureCounts: [String: Int] = [:]
     let currentCoordinate: CLLocationCoordinate2D?
     let isInJapan: Bool
     var onSelectPrefecture: (PrefectureShape) -> Void = { _ in }
@@ -49,17 +47,6 @@ struct IllustratedJapanMapView: View {
                     .resizable()
                     .frame(width: mapRect.width, height: mapRect.height)
                     .position(x: mapRect.midX, y: mapRect.midY)
-
-                // ── Visited prefectures: green only where we've been ─────
-                // Intensity grows with distinct cities visited (1 → light,
-                // 3+ → deep). Clipped to the plate so out-of-window islands
-                // (Izu / Ogasawara) don't paint below the map.
-                visitedPrefectureFills(mapRect: mapRect)
-                    .mask {
-                        Rectangle()
-                            .frame(width: mapRect.width, height: mapRect.height)
-                            .position(x: mapRect.midX, y: mapRect.midY)
-                    }
 
                 // ── Visited marks (traveler's ink, not UI cards) ─────────
                 visitedMarks(mapRect: mapRect)
@@ -101,29 +88,6 @@ struct IllustratedJapanMapView: View {
                 }
             }
         }
-    }
-
-    // MARK: - Visited prefectures — graduated moss fill
-
-    private func visitedPrefectureFills(mapRect: CGRect) -> some View {
-        let projection = JapanMapProjection(rect: mapRect, mainIsland: true)
-
-        return ZStack(alignment: .topLeading) {
-            ForEach(visitedPrefectureCounts.keys.sorted(), id: \.self) { id in
-                if let count = visitedPrefectureCounts[id],
-                   count > 0,
-                   let shape = JapanGeography.prefecture(id: id) {
-                    PrefectureFillsShape(rings: shape.rings, projection: projection)
-                        .fill(TABiColor.moss.opacity(Self.fillOpacity(cityCount: count)))
-                }
-            }
-        }
-        .allowsHitTesting(false)
-    }
-
-    /// 1 city → 0.32 · 2 → 0.47 · 3 → 0.62 · 4+ → 0.78
-    private static func fillOpacity(cityCount: Int) -> Double {
-        min(0.78, 0.32 + 0.15 * Double(cityCount - 1))
     }
 
     // MARK: - Visited marks — ◉ + Japanese primary + English secondary
@@ -247,21 +211,5 @@ struct IllustratedJapanMapView: View {
             let x = rect.minX + (rect.width - w2) / 2
             return CGRect(x: x, y: rect.minY, width: w2, height: rect.height)
         }
-    }
-}
-
-// MARK: - Prefecture fill shape
-
-/// Fills GeoJSON prefecture rings through a `JapanMapProjection`.
-private struct PrefectureFillsShape: Shape {
-    let rings: [[CLLocationCoordinate2D]]
-    let projection: JapanMapProjection
-
-    func path(in _: CGRect) -> Path {
-        var path = Path()
-        for ring in rings {
-            path.addPath(Path(projection.path(for: ring)))
-        }
-        return path
     }
 }

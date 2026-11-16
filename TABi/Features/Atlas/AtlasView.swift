@@ -19,16 +19,6 @@ struct AtlasView: View {
         return true
     }
 
-    /// Prefecture id → distinct visited cities, from confirmed visits.
-    private var visitedPrefectureCounts: [String: Int] {
-        var citiesByPrefecture: [String: Set<String>] = [:]
-        for visit in env.confirmedVisits() {
-            guard let id = Self.prefectureID(matching: visit.prefecture) else { continue }
-            citiesByPrefecture[id, default: []].insert(visit.city)
-        }
-        return citiesByPrefecture.mapValues { $0.count }
-    }
-
     /// Match a reverse-geocoded prefecture name ("Kyoto", "Hokkaido",
     /// "Tokyo Prefecture"…) to a GeoJSON shape ("Kyoto Fu", "Hokkai Do"…).
     private static func prefectureID(matching name: String) -> String? {
@@ -70,7 +60,6 @@ struct AtlasView: View {
         NavigationStack(path: $path) {
             IllustratedJapanMapView(
                 visitedCities: visibleCityMarkers,
-                visitedPrefectureCounts: visitedPrefectureCounts,
                 currentCoordinate: env.currentSample.map {
                     CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
                 },
