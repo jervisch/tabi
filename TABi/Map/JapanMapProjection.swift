@@ -121,4 +121,15 @@ struct JapanMapProjection {
         }
         return nil
     }
+
+    /// Inverse projection: convert artwork screen coordinates back to geographic coordinates.
+    func coordinate(for point: CGPoint, in rect: CGRect) -> CLLocationCoordinate2D {
+        let lonSpan = bounds.maxLon - bounds.minLon
+        let latSpan = bounds.maxLat - bounds.minLat
+        guard lonSpan > 0, latSpan > 0 else { return CLLocationCoordinate2D(latitude: 0, longitude: 0) }
+
+        let longitude = bounds.minLon + Double(point.x - rect.minX) / rect.width * lonSpan
+        let latitude = bounds.maxLat - Double(point.y - rect.minY) / latSpan * latSpan
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
 }

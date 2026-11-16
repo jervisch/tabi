@@ -93,11 +93,6 @@ struct AtlasView: View {
         NavigationStack(path: $path) {
             ZStack(alignment: .topLeading) {
                 IllustratedJapanMapView(
-                    visitedCities: visibleCityMarkers,
-                    currentCoordinate: env.currentSample.map {
-                        CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
-                    },
-                    isInJapan: isInJapan,
                     showsOkinawaInset: hasVisitedOkinawa,
                     onSelectPrefecture: { shape in
                         path.append(PrefectureRoute(

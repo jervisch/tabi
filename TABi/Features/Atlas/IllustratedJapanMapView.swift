@@ -7,14 +7,14 @@ import CoreLocation
 /// Overlays: editorial visited marks, quiet current location, printed-atlas Okinawa inset.
 /// Hit-testing: geographic dataset via `JapanMapProjection` (authoritative).
 struct IllustratedJapanMapView: View {
-    let visitedCities: [CityPoint]
-    let currentCoordinate: CLLocationCoordinate2D?
-    let isInJapan: Bool
+    let visitedCities: [CityPoint] = []
     /// Okinawa inset only appears once the traveler has visited Okinawa.
     var showsOkinawaInset: Bool = true
     var onSelectPrefecture: (PrefectureShape) -> Void = { _ in }
 
     @State private var pulse = false
+    @State private var zoom: CGFloat = 1
+    @State private var panOffset: CGPoint = .zero
 
     private static let mapAspect: CGFloat = 1024.0 / 1536.0
     private static let insetAspect: CGFloat = 512.0 / 407.0
@@ -30,33 +30,20 @@ struct IllustratedJapanMapView: View {
     var body: some View {
         GeometryReader { geo in
             let area = CGRect(origin: .zero, size: geo.size)
-            // Full-bleed aspect-fit — the illustration IS the page, not a card.
-            let mapRect = Self.aspectFit(Self.mapAspect, in: area)
-
-            let insetWidth = min(max(area.width * 0.26, 110), 140)
-            let insetHeight = insetWidth / (Self.insetAspect)
-            let insetRect = CGRect(
-                x: area.minX + 10,
-                y: area.maxY - insetHeight - 10,
-                width: insetWidth,
-                height: insetHeight
+            // Map content larger than viewport
+            let mapContentSize = CGSize(width: 1024 * zoom, height: 1536 * zoom)
+            // Clamp panOffset so we never pan beyond the map edges
+            let clampedPanOffset = CGSize(
+                width: max(0, min(panOffset.x, mapContentSize.width - area.width)),
+                height: max(0, min(panOffset.y, mapContentSize.height - area.height))
             )
-            let insetArt = Self.aspectFit(Self.insetAspect, in: insetRect)
 
             ZStack(alignment: .topLeading) {
                 // ── The hero: the illustrated page itself ─
                 Image("japan_map_base")
                     .resizable()
-                    .frame(width: mapRect.width, height: mapRect.height)
-                    .position(x: mapRect.midX, y: mapRect.midY)
-
-                // ── Visited marks (traveler's ink, not UI cards) ─────────
-                visitedMarks(mapRect: mapRect)
-
-                // ── Current location ─────────────────────────────────────
-                if let coord = currentCoordinate, isInJapan {
-                    currentLocationMark(mapRect: mapRect, coord: coord)
-                }
+                    .frame(width: mapContentSize.width, height: mapContentSize.height)
+                    .position(x: area.midX + clampedPanOffset.width, y: area.midY + clampedPanOffset.height)
 
                 // ── Geographic tap target (dataset, not artwork) ─────────
                 Color.clear
@@ -65,26 +52,30 @@ struct IllustratedJapanMapView: View {
                     .gesture(
                         SpatialTapGesture()
                             .onEnded { value in
+                                let screenPt = CGPoint(x: value.location.x, y: value.location.y)
+                                let artPt = CGPoint(x: (screenPt.x - panOffset.x) / zoom, y: (screenPt.y - panOffset.y) / zoom)
                                 if let hit = JapanMapProjection.prefecture(
-                                    containing: value.location,
-                                    in: mapRect,
+                                    containing: artPt,
+                                    in: CGRect(x: 0, y: 0, width: 1024, height: 1536),
                                     shapes: mainShapes
                                 ) {
                                     onSelectPrefecture(hit)
                                 }
                             }
                     )
-
-                // ── Okinawa: quiet printed inset (only once visited) ──────
-                if showsOkinawaInset {
-                    okinawaInset(art: insetArt)
-                }
-
-                // ── Elsewhere (only when outside Japan) ──────────────────
-                if !isInJapan {
-                    elsewhereMark(area: area)
-                }
             }
+            .gesture(
+                DragGesture()
+                    .onChanged { value in
+                        panOffset = CGPoint(x: value.translation.width, y: value.translation.height)
+                    }
+            )
+            .gesture(
+                MagnificationGesture()
+                    .onChanged { value in
+                        zoom = min(2.5, max(1.0, value))
+                    }
+            )
             .onAppear {
                 guard !pulse else { return }
                 withAnimation(.easeInOut(duration: 1.4).repeatForever(autoreverses: true)) {
@@ -92,34 +83,6 @@ struct IllustratedJapanMapView: View {
                 }
             }
         }
-    }
-
-    // MARK: - Visited marks — ◉ + Japanese primary + English secondary
-
-    private func visitedMarks(mapRect: CGRect) -> some View {
-        let projection = JapanMapProjection(rect: mapRect, mainIsland: true)
-
-        return ZStack(alignment: .topLeading) {
-            ForEach(visitedCities) { city in
-                if JapanMapProjection.isInMainBounds(
-                    city.coordinate.latitude,
-                    city.coordinate.longitude
-                ) {
-                    let pt = projection.point(for: city.coordinate)
-
-                    // Dot sits exactly on the coordinate; label hangs below.
-                    markDot
-                        .transition(.opacity)
-                        .position(x: pt.x, y: pt.y)
-
-                    editorialLabel(ja: city.nameJa, en: city.nameEn)
-                        .transition(.opacity)
-                        .position(x: pt.x, y: pt.y + 38)
-                }
-            }
-        }
-        .animation(.easeOut(duration: 0.35), value: visitedCities.count)
-        .allowsHitTesting(false)
     }
 
     private var markDot: some View {
@@ -147,24 +110,7 @@ struct IllustratedJapanMapView: View {
         .fixedSize()
     }
 
-    private func currentLocationMark(mapRect: CGRect, coord: CLLocationCoordinate2D) -> some View {
-        let projection = JapanMapProjection(rect: mapRect, mainIsland: true)
-        let pt = projection.point(for: coord)
-
-        return ZStack {
-            Circle()
-                .fill(TABiColor.vermilion.opacity(0.18))
-                .frame(width: pulse ? 26 : 12, height: pulse ? 26 : 12)
-            Circle()
-                .fill(TABiColor.vermilion)
-                .frame(width: 8, height: 8)
-                .overlay(Circle().stroke(TABiColor.washi, lineWidth: 1.5))
-        }
-        .position(x: pt.x, y: pt.y)
-        .allowsHitTesting(false)
-    }
-
-    // MARK: - Okinawa inset — printed atlas, low contrast
+// MARK: - Okinawa inset — printed atlas, low contrast
 
     private func okinawaInset(art: CGRect) -> some View {
         ZStack(alignment: .topLeading) {
@@ -183,28 +129,7 @@ struct IllustratedJapanMapView: View {
         .allowsHitTesting(false)
     }
 
-    // MARK: - Elsewhere — quiet, no card
-
-    private func elsewhereMark(area: CGRect) -> some View {
-        VStack(spacing: 3) {
-            Image("elsewhere_island")
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: 110)
-            Text("ELSEWHERE")
-                .font(TABiFont.caption(8, weight: .medium))
-                .tracking(1.5)
-                .foregroundStyle(TABiColor.sumi.opacity(0.55))
-            Text("Exploring somewhere else\nin the world")
-                .font(TABiFont.placeEnglish(9))
-                .multilineTextAlignment(.center)
-                .foregroundStyle(TABiColor.sumi.opacity(0.4))
-        }
-        .position(x: min(area.maxX - 78, area.width - 20), y: min(area.maxY - 96, area.height - 60))
-        .allowsHitTesting(false)
-    }
-
-    // MARK: - Geometry
+// MARK: - Geometry
 
     private static func aspectFit(_ aspect: CGFloat, in rect: CGRect) -> CGRect {
         guard aspect > 0, rect.width > 0, rect.height > 0 else { return rect }
