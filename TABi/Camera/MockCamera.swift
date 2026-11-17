@@ -3,6 +3,7 @@ import AVFoundation
 
 final class MockCamera: CameraCapturing {
     var authorization: AVAuthorizationStatus
+    let session = AVCaptureSession()
     var fixtureData: Data
     private(set) var captureCount = 0
     private(set) var started = false

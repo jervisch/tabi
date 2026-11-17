@@ -4,10 +4,13 @@ import CoreLocation
 /// Illustrated Atlas — the map is the page.
 ///
 /// Visual layer: `japan_map_base` artwork only (no added decoration).
-/// Overlays: editorial visited marks, quiet current location, printed-atlas Okinawa inset.
+/// Overlays: sage prefecture fills (by visit count), editorial visited marks,
+/// quiet current location, printed-atlas Okinawa inset.
 /// Hit-testing: geographic dataset via `JapanMapProjection` (authoritative).
 struct IllustratedJapanMapView: View {
     let visitedCities: [CityPoint] = []
+    /// Distinct cities visited per prefecture from confirmed visits.
+    let visitedPrefectureCounts: [String: Int]
     /// Okinawa inset only appears once the traveler has visited Okinawa.
     var showsOkinawaInset: Bool = true
     var onSelectPrefecture: (PrefectureShape) -> Void = { _ in }
@@ -44,6 +47,10 @@ struct IllustratedJapanMapView: View {
                     .resizable()
                     .frame(width: mapContentSize.width, height: mapContentSize.height)
                     .position(x: area.midX + clampedPanOffset.width, y: area.midY + clampedPanOffset.height)
+
+                // ── Sage prefecture fills (moss opacity by visit count) ─────
+                SagePrefectureFills(counts: visitedPrefectureCounts, mainShapes: mainShapes)
+                    .opacity(1)
 
                 // ── Geographic tap target (dataset, not artwork) ─────────
                 Color.clear
@@ -127,6 +134,28 @@ struct IllustratedJapanMapView: View {
                 .position(x: art.midX, y: art.midY)
         }
         .allowsHitTesting(false)
+    }
+
+// MARK: - Sage prefecture fills layer
+
+    struct SagePrefectureFills: View {
+        let counts: [String: Int]
+        let mainShapes: [PrefectureShape]
+
+        var body: some View {
+            ForEach(counts.keys.sorted(), id: \.self) { prefectureID in
+                if let count = counts[prefectureID],
+                   let shape = mainShapes.first(where: { $0.id == prefectureID }) {
+                    let projection = JapanMapProjection(rect: CGRect(x: 0, y: 0, width: 1024, height: 1536))
+                    Path(projection.path(for: shape.rings[0]))
+                        .fill(TABiColor.moss.opacity(min(0.30, 0.10 + 0.06 * Double(count))))
+                }
+            }
+            .mask {
+                Rectangle()
+                    .frame(width: 1024, height: 1536)
+            }
+        }
     }
 
 // MARK: - Geometry

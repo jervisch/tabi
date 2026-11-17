@@ -22,6 +22,7 @@ final class AppEnvironment {
     private(set) var lastSavedMemory: Memory?
     private(set) var lastSavedImage: UIImage?
     private(set) var showMemorySavedCard = false
+    var isCapturing = false
 
     init(
         container: ModelContainer,
@@ -59,41 +60,54 @@ final class AppEnvironment {
         currentComponents = await placeResolver.resolve(sample: sample)
     }
 
-    func captureAndRemember() async {
-        do {
-            let sample = await locationProvider.currentSample()
-            let components: PlaceComponents
-            if let sample {
-                RecentLocationStore.shared.append(sample)
-                components = await placeResolver.resolve(sample: sample)
-                currentComponents = components
-            } else {
-                components = PlaceComponents()
-            }
+    func takePhoto() async throws -> (processedImage: UIImage, components: PlaceComponents?) {
+        isCapturing = true
+        defer { isCapturing = false }
 
-            let raw = try await camera.capturePhoto()
-            let processed = (try? film.process(raw)) ?? raw
-            let id = UUID()
-            let fileName = try MemoryFileStore.write(processed, id: id)
+        let sample = await locationProvider.currentSample()
+        let components: PlaceComponents
+        if let sample {
+            RecentLocationStore.shared.append(sample)
+            components = await placeResolver.resolve(sample: sample)
+            currentComponents = components
+        } else {
+            components = PlaceComponents()
+        }
 
-            let memory = Memory(
-                imageData: processed,
-                capturedAt: sample?.timestamp ?? Date(),
-                latitude: sample?.latitude ?? 0,
-                longitude: sample?.longitude ?? 0,
-                accuracy: sample?.accuracy ?? 999,
-                placeName: components.placeName,
-                city: components.city,
-                prefecture: components.prefecture,
-                country: components.country,
-                imageFileName: fileName
+        let raw = try await camera.capturePhoto()
+        let processed = (try? film.process(raw)) ?? raw
+        let uiImage = UIImage(data: processed) ?? UIImage()
+
+        let id = UUID()
+        let fileName = try MemoryFileStore.write(processed, id: id)
+
+        return (processedImage: uiImage, components: components)
+    }
+
+    func saveMemory(processed: UIImage, components: PlaceComponents?, capturedAt: Date) async throws {
+        let processedData = processed.jpegData(compressionQuality: 0.82) ?? processed.pngData() ?? Data()
+        let id = UUID()
+        let fileName = try MemoryFileStore.write(processedData, id: id)
+
+        let memory = Memory(
+            imageData: processedData,
+            capturedAt: capturedAt,
+            latitude: 0,
+            longitude: 0,
+            accuracy: 999,
+            placeName: components?.placeName ?? "",
+            city: components?.city ?? "",
+            prefecture: components?.prefecture ?? "",
+            country: components?.country ?? "",
+            imageFileName: fileName
+        )
+        try memoryStore.insert(memory)
+
+        if let sample = await locationProvider.currentSample() {
+            let dwell = RecentLocationStore.shared.dwellSeconds(
+                near: CLLocationCoordinate2D(latitude: sample.latitude, longitude: sample.longitude)
             )
-            try memoryStore.insert(memory)
-
-            if let sample {
-                let dwell = RecentLocationStore.shared.dwellSeconds(
-                    near: CLLocationCoordinate2D(latitude: sample.latitude, longitude: sample.longitude)
-                )
+            if let components {
                 _ = try VisitDetector.attach(
                     memory: memory,
                     components: components,
@@ -102,17 +116,14 @@ final class AppEnvironment {
                     store: visitStore
                 )
             }
-            try? container.mainContext.save()
-            refreshStats()
-
-            lastSavedMemory = memory
-            lastSavedImage = UIImage(data: processed)
-            showMemorySavedCard = true
-        } catch {
-            lastSavedMemory = nil
-            lastSavedImage = nil
-            showMemorySavedCard = false
         }
+        try? container.mainContext.save()
+        refreshStats()
+
+        lastSavedMemory = memory
+        lastSavedImage = processed
+
+        showMemorySavedCard = false
     }
 
     func allMemories() -> [Memory] {

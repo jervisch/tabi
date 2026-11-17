@@ -11,6 +11,7 @@ enum CameraError: Error, Equatable {
 @MainActor
 protocol CameraCapturing: AnyObject {
     var authorization: AVAuthorizationStatus { get }
+    var session: AVCaptureSession { get }
     func requestPermission() async -> Bool
     func start() throws
     func stop()

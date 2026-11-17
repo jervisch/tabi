@@ -64,6 +64,15 @@ struct AtlasView: View {
         return s
     }
 
+    /// Computed distinct cities visited per prefecture from confirmed visits.
+    private var visitedPrefectureCounts: [String: Int] {
+        Dictionary(grouping: env.confirmedVisits(), by: {
+            Self.prefectureID(matching: $0.prefecture) ?? "unknown"
+        }).mapValues { visits in
+            Set(visits.map { $0.city }).count
+        }
+    }
+
     /// Printed-on-the-atlas progress note. No card, no pill, no shadow.
     private var statsAnnotation: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -93,6 +102,7 @@ struct AtlasView: View {
         NavigationStack(path: $path) {
             ZStack(alignment: .topLeading) {
                 IllustratedJapanMapView(
+                    visitedPrefectureCounts: visitedPrefectureCounts,
                     showsOkinawaInset: hasVisitedOkinawa,
                     onSelectPrefecture: { shape in
                         path.append(PrefectureRoute(

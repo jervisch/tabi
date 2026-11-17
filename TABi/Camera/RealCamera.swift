@@ -3,7 +3,7 @@ import AVFoundation
 import UIKit
 
 final class RealCamera: NSObject, CameraCapturing {
-    private let session = AVCaptureSession()
+    let session = AVCaptureSession()
     private let photoOutput = AVCapturePhotoOutput()
     private let queue = DispatchQueue(label: "tabi.camera")
     private var isConfigured = false

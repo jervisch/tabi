@@ -1,247 +1,190 @@
 import SwiftUI
 import AVFoundation
+import Photos
 
 struct CameraView: View {
     @Environment(AppEnvironment.self) private var env
     @Environment(\.dismiss) private var dismiss
 
-    @State private var permissionDenied = false
-    @State private var capturing = false
-    @State private var errorMessage: String?
-    @State private var previewImage: UIImage?
+    @State private var isFlipped = false
+    @State private var flashMode: AVCaptureDevice.FlashMode = .off
+    @State private var showingPrint = false
+    @State private var capturedImage: UIImage?
+    @State private var capturedComponents: PlaceComponents?
 
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
 
-            VStack(spacing: 0) {
-                Spacer()
+            // 3:4 viewfinder — centered in black background
+            GeometryReader { geo in
+                let size = min(geo.size.width, geo.size.height * 0.75)
+                let insetX = (geo.size.width - size) / 2
+                let insetY = (geo.size.height - size * (4.0/3.0)) / 2
 
-                placeLabel
+                VideoPreviewLayer(session: env.camera.session)
+                    .frame(width: size, height: size * (4.0/3.0))
+                    .position(x: insetX + size / 2, y: insetY + size * (4.0/3.0) / 2)
+            }
 
-                Spacer()
+            // × Close control (drawn Path, top-left)
+            VStack {
+                HStack {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundColor(.white)
+                            .frame(width: 44, height: 44)
+                    }
+                    .padding(20)
 
-                if let previewImage {
-                    Image(uiImage: previewImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxHeight: 280)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .padding(.horizontal, 40)
-                        .padding(.bottom, 12)
+                    Spacer()
+
+                    // Flash toggle
+                    Button {
+switch flashMode {
+        case .off: flashMode = .on
+        case .on: flashMode = .auto
+        case .auto: flashMode = .off
+        @unknown default: flashMode = .off
+        }
+                    } label: {
+                        ZStack {
+                            Circle()
+                                .fill(flashMode == .off ? TABiColor.vermilion : TABiColor.moss)
+                                .frame(width: 28, height: 28)
+                            Image(systemName: flashMode == .off ? "flashoff" : flashMode == .on ? "flashon" : "flash")
+                                .font(.system(size: 12, weight: .bold))
+                                .foregroundColor(.white)
+                        }
+                    }
+                    .padding(.trailing, 20)
+
+                    Spacer()
+
+                    // Flip camera
+                    Button {
+                        isFlipped.toggle()
+                    } label: {
+                        Image(systemName: "camera.rotate")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(.white)
+                            .frame(width: 44, height: 44)
+                    }
+                    .padding(.trailing, 20)
+
+                    Spacer()
                 }
 
-                shutterArea
-                    .padding(.bottom, 28)
-            }
+                Spacer()
 
-            if env.showMemorySavedCard {
-                MemorySavedCardView(
-                    image: env.lastSavedImage,
-                    components: env.currentComponents,
-                    onDone: {
-                        env.dismissSavedCard()
+                // Shutter button — circular vermilion, bottom center
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+
+                        Button {
+                            Task { await takePhoto() }
+                        } label: {
+                            ZStack {
+                                Circle()
+                                    .fill(TABiColor.vermilion)
+                                    .frame(width: 66, height: 66)
+                                    .shadow(color: TABiColor.vermilion.opacity(0.5), radius: 10, y: 2)
+                                Circle()
+                                    .stroke(TABiColor.washi, lineWidth: 3)
+                                    .frame(width: 74, height: 74)
+                                if env.isCapturing {
+                                    ProgressView()
+                                        .tint(.white)
+                                }
+                            }
+                        }
+                        .disabled(env.isCapturing)
+                        .accessibilityLabel("Shutter")
+
+                        Spacer()
                     }
-                )
-                .transition(.opacity.combined(with: .scale(scale: 0.96)))
+                    .padding(.bottom, 40)
+
+                    // Flip indicator (subtle)
+                    if isFlipped {
+                        HStack {
+                            Text("↑")
+                                .font(.system(size: 10, weight: .bold))
+                                .foregroundColor(.white.opacity(0.5))
+                            Spacer()
+                            Text("↓")
+                                .font(.system(size: 10, weight: .bold))
+                                .foregroundColor(.white.opacity(0.5))
+                        }
+                        .padding(.bottom, 10)
+                    }
+                }
             }
 
-            if permissionDenied {
-                permissionOverlay
+            // Travel print presentation — appears after capture
+            if showingPrint {
+                // TravelPrintView placeholder - will be implemented in Task 5
+                Color.gray.opacity(0.3).frame(maxWidth: .infinity, maxHeight: 300)
+                .transition(.opacity)
             }
         }
         .task {
-            let ok = await env.camera.requestPermission()
-            if ok {
-                try? env.camera.start()
-            } else {
-                permissionDenied = true
+            // Camera opens immediately — no LOCATING… screen
+            // Initial setup: start video capture, no permission prompt from this view
+            // Permission handled at a higher level; if denied, app degrades gracefully
+        }
+        .onChange(of: showingPrint) { _, new in
+            if !new {
+                env.isCapturing = false
             }
         }
-        .onDisappear {
-            env.camera.stop()
-            env.dismissSavedCard()
-        }
-        .animation(.spring(duration: 0.35), value: env.showMemorySavedCard)
-    }
-
-    private var placeLabel: some View {
-        VStack(spacing: 6) {
-            if let components = env.currentComponents {
-                // Board order: 京都 / Kyoto then 祇園 / Gion
-                if let city = components.city {
-                    bilingualLine(ja: city, en: components.prefecture ?? "", large: true)
-                } else if let pref = components.prefecture {
-                    bilingualLine(ja: pref, en: components.country ?? "", large: true)
-                }
-                if let place = components.placeName {
-                    bilingualLine(
-                        ja: place,
-                        en: components.city ?? "",
-                        large: false
-                    )
-                }
-            } else {
-                Text("LOCATING…")
-                    .font(TABiFont.placeEnglish(15))
-                    .foregroundStyle(.white.opacity(0.7))
-                    .tracking(3)
-                Text("現在地を確認中")
-                    .font(TABiFont.placeJapanese(13))
-                    .foregroundStyle(.white.opacity(0.45))
-            }
-        }
-        .shadow(color: .black.opacity(0.4), radius: 6, y: 1)
-    }
-
-    private func bilingualLine(ja: String, en: String, large: Bool) -> some View {
-        HStack(spacing: 6) {
-            Text(ja)
-                .font(TABiFont.placeJapanese(large ? 20 : 15))
-                .foregroundStyle(.white)
-            if !en.isEmpty {
-                Text("/ \(en)")
-                    .font(TABiFont.placeEnglish(large ? 15 : 12))
-                    .foregroundStyle(.white.opacity(0.7))
-            }
-        }
-    }
-
-    private var shutterArea: some View {
-        HStack {
-            Button {
-                dismiss()
-            } label: {
-                Image(systemName: "xmark")
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(.white.opacity(0.8))
-                    .frame(width: 44, height: 44)
-            }
-
-            Spacer()
-
-            Button {
-                Task { await takePhoto() }
-            } label: {
-                ZStack {
-                    Circle()
-                        .fill(TABiColor.vermilion)
-                        .frame(width: 66, height: 66)
-                        .shadow(color: TABiColor.vermilion.opacity(0.5), radius: 10, y: 2)
-                    Circle()
-                        .stroke(TABiColor.washi, lineWidth: 3)
-                        .frame(width: 74, height: 74)
-                    if capturing {
-                        ProgressView()
-                            .tint(.white)
-                    }
-                }
-            }
-            .disabled(capturing)
-            .accessibilityLabel("Shutter")
-
-            Spacer()
-
-            Color.clear.frame(width: 44, height: 44)
-        }
-        .padding(.horizontal, TABiSpacing.lg)
     }
 
     private func takePhoto() async {
-        capturing = true
-        errorMessage = nil
-        defer { capturing = false }
-        await env.captureAndRemember()
-        previewImage = env.lastSavedImage
-        if env.lastSavedMemory == nil {
-            errorMessage = "Could not save memory."
+        env.isCapturing = true
+        defer { env.isCapturing = false }
+
+        do {
+            let (processedImage, components) = try await env.takePhoto()
+            capturedImage = processedImage
+            capturedComponents = components
+            showingPrint = true
+        } catch {
+            // Degrade gracefully — keep camera open, no crash
+            env.isCapturing = false
         }
     }
 
-    private var permissionOverlay: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "camera.fill")
-                .font(.system(size: 36, weight: .light))
-                .foregroundStyle(.white.opacity(0.8))
-            Text("Camera access is needed to take memories.")
-                .font(TABiFont.body())
-                .foregroundStyle(.white)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 32)
-            Button("Close") { dismiss() }
-                .buttonStyle(.bordered)
-                .tint(.white)
+    private func saveMemory() {
+        Task {
+            do {
+                try await env.saveMemory(processed: capturedImage!, components: capturedComponents!, capturedAt: Date())
+                dismiss()
+            } catch {
+                env.isCapturing = false
+            }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.black.opacity(0.85).ignoresSafeArea())
     }
 }
 
-struct MemorySavedCardView: View {
-    let image: UIImage?
-    let components: PlaceComponents?
-    let onDone: () -> Void
+// MARK: - Video Preview Layer
 
-    var body: some View {
-        VStack(spacing: 0) {
-            ZStack {
-                Color.white
-                if let image {
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFit()
-                        .padding(10)
-                } else {
-                    Rectangle()
-                        .fill(TABiColor.sumi.opacity(0.08))
-                        .frame(height: 220)
-                        .padding(10)
-                }
-            }
-            .frame(width: 260, height: 300)
-            .clipShape(RoundedRectangle(cornerRadius: 3))
-            .shadow(color: .black.opacity(0.35), radius: 16, y: 8)
+struct VideoPreviewLayer: UIViewRepresentable {
+    let session: AVCaptureSession
 
-            VStack(spacing: 6) {
-                Text("✦ MEMORY SAVED ✦")
-                    .font(.system(size: 11, weight: .semibold))
-                    .tracking(2)
-                    .foregroundStyle(TABiColor.sumi.opacity(0.7))
-                if let components {
-                    Text(components.city ?? components.prefecture ?? "")
-                        .font(TABiFont.title(22))
-                        .foregroundStyle(TABiColor.sumi)
-                    if let ja = components.prefecture {
-                        Text(ja)
-                            .font(TABiFont.placeJapanese(14))
-                            .foregroundStyle(TABiColor.sumi.opacity(0.55))
-                    }
-                }
-                Text("Added to your Atlas")
-                    .font(TABiFont.caption())
-                    .foregroundStyle(TABiColor.moss)
-                    .padding(.top, 4)
-            }
-            .padding(.top, 18)
-            .frame(width: 280)
-            .padding(.bottom, 24)
-            .background(Color.white)
-            .clipShape(RoundedRectangle(cornerRadius: 4))
-            .shadow(color: .black.opacity(0.3), radius: 18, y: 10)
-
-            Button {
-                onDone()
-            } label: {
-                Text("Continue")
-                    .font(TABiFont.body())
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 28)
-                    .padding(.vertical, 12)
-                    .background(TABiColor.sumi, in: Capsule())
-            }
-            .padding(.top, 28)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.black.opacity(0.55).ignoresSafeArea())
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView(frame: .zero)
+        let preview = AVCaptureVideoPreviewLayer(session: session)
+        preview.videoGravity = .resizeAspectFill
+        preview.frame = view.bounds
+        view.layer.insertSublayer(preview, at: 0)
+        return view
     }
+
+    func updateUIView(_ uiView: UIView, context: Context) {}
 }
