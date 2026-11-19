@@ -1,0 +1,10 @@
+.DS_Store
+build/
+DerivedData/
+*.xcuserdatad/
+xcuserdata/
+
+# Plans & AI-assisted work — only code goes to the remote
+/.superpowers/
+/docs/
+/*.png

@@ -1,0 +1,6 @@
+{
+  "images" : [
+    { "idiom" : "universal", "filename" : "elsewhere_island.png" }
+  ],
+  "info" : { "author" : "xcode", "version" : 1 }
+}

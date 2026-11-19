@@ -1,0 +1,25 @@
+{
+  "brand": {
+    "name": "旅 TABi",
+    "positioning": "A visual atlas of your memories in Japan."
+  },
+  "references": [
+    "design/references/TABi_visual_handoff_board.png"
+  ],
+  "colors": {
+    "washi": "#F6F0E4",
+    "sumi": "#34312C",
+    "indigo": "#557C91",
+    "sky": "#8FC5D8",
+    "moss": "#8FA477",
+    "peach": "#E9A59A",
+    "vermilion": "#C95B45",
+    "sand": "#DCC8A5"
+  },
+  "asset_status": {
+    "visual_handoff_board": "provided",
+    "japan_map": "agent should create from MAP_ASSET_PROMPT using licensed geographic data",
+    "illustrations": "agent should create/import as described in DESIGN.md",
+    "icons": "prefer custom line icons matching the illustration language"
+  }
+}

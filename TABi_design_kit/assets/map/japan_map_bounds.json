@@ -1,0 +1,10 @@
+{
+  "asset": "japan_map_base.png",
+  "projection": "illustrative equirectangular approximation for overlay alignment; not cartographically exact",
+  "latitude_min": 30.2,
+  "latitude_max": 45.8,
+  "longitude_min": 128.5,
+  "longitude_max": 146.5,
+  "coordinate_mapping": "linear longitude/latitude mapping across the artwork bounds; calibrate against visible coastline before production use",
+  "notes": "The artwork is decorative and geographically inspired; use the app geographic dataset for authoritative hit-testing."
+}
