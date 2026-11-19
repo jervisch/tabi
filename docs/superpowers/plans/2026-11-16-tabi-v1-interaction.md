@@ -1,5 +1,48 @@
 # TABi V1 Interaction & Visual Implementation Plan
 
+## FINAL TARGET STATE (authoritative — supersedes conflicting task text below)
+
+Reference mockup: `/Users/jervischan/Documents/Code/tabi/2c8b1209-6ca9-4ff7-b1e9-33324bfb7d34.png`
+
+This is the definitive description of the app after all discussions. Where any task
+below contradicts this section, **this section wins.**
+
+### Atlas (root screen)
+- Full-bleed illustrated Japan map (`japan_map_base.png`) extending **behind** the bottom nav.
+- Map is pannable and zoomable. No top header. No TABi logo.
+- Visited prefectures filled with a **subtle sage-green** tint.
+- **No** city names, no pins, no stamps, no visit labels.
+- Stats upper-left, editorial typography, e.g. `47 / 47 PREFECTURES` + `47 CITIES`
+  (with `-seedDemo`). Warm washi paper background throughout.
+- No new raster assets unless strictly necessary; existing assets + SwiftUI native drawing.
+- Native / responsive layout — no hardcoded device sizing.
+
+### Bottom navigation (persistent)
+- Warm-washi strip. **Exactly three** controls:
+  - `Map` (left)
+  - circular shutter camera button (center, slightly overlapping the strip's top edge)
+  - `Memories` (right)
+- English labels only. **No** icons, tab-bar symbols, pills, or SF Symbols for Map/Memories.
+- `Map` selected → subtle hand-drawn vermilion underline. `Memories` inactive/understated.
+- Camera control → a simple vermilion circular shutter with a thin cream/dark outline.
+
+### Interaction
+- `Map` → Atlas · `Memories` → Memories · center camera → Camera (full-screen cover).
+- **No swipe navigation** between Atlas and Memories. (This supersedes Task 6.)
+
+### Camera
+- Opens immediately, full-screen. 3:4 viewfinder centered on black.
+- × close top-left; shutter; flash toggle; flip camera.
+- After capture → travel print: warm paper, photo, ja/en location + date, Save/Cancel.
+
+### Memories
+- Photo-first, trips grouped by year.
+
+### Outstanding correctness items
+- Fresh `-seedDemo` run must yield `47 / 47 prefectures · 47 cities` and visible sage fills.
+- If seen, fix the "single camera button / no map / no nav" launch state (state restoration or
+  RootView layout regression).
+
 ## Task 1: Atlas viewport — pannable/zoomable full-screen map (Phase 1)
 
 **Planned Start:** Task 1 of TABi V1 Interaction redirection on feat/atlas-v3
@@ -233,8 +276,24 @@ TABi iOS SwiftUI app at /Users/jervischan/Documents/Code/tabi, branch feat/atlas
 
 **Reply contract (<15 lines):** as per writing-plans skill format.
 
-**
-<tool_call>
-<function=bash>
-<parameter=command>
-grep -n "Task [0-9]" /Users/jervischan/Documents/Code/tabi/docs/superpowers/plans/2026-11-16-tabi-v1-interaction.md | head -20
+## Task 8: Atlas screen to match mockup + restore bottom nav (Phase 8 — authoritative)
+
+**Context:**
+TABi iOS SwiftUI app at /Users/jervischan/Documents/Code/tabi, branch feat/atlas-v3.
+The current app can render as only a camera button with no map/nav (launch-state regression).
+Implement the FINAL TARGET STATE above, using the mockup reference image for proportions.
+
+**Your Job:**
+1. Fix launch regression: `RootView` must default to `screen == .atlas`, `isCameraPresented == false`,
+   and render the Atlas map + nav — never the camera on launch.
+2. Rebuild the bottom nav in `RootView.swift` to the mockup: warm-washi strip, `Map` (left, vermilion
+   hand-drawn underline when selected), center vermilion shutter overlapping the strip's top edge,
+   `Memories` (right, understated). English labels only; no icons/SF Symbols/pills.
+3. Remove Atlas↔Memories swipe gestures (Task 6 superseded). Wire taps: Map→Atlas, Memories→Memories,
+   center→Camera full-screen cover.
+4. `AtlasView`/`IllustratedJapanMapView`: map extends behind the nav (no bottom padding reserving a
+   tab bar); stats annotation upper-left in editorial typography.
+5. Verify sage fills + `47 / 47` stats on a fresh `-seedDemo` run (compile-only per policy; visual
+   check is pending user verification).
+6. Build must be `** BUILD SUCCEEDED **`. Compare rendered screen to the reference and iterate on
+   map scale, nav height, shutter size/position, typography, and whitespace.
