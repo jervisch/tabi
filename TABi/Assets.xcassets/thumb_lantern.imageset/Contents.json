@@ -1,0 +1,6 @@
+{
+  "images" : [
+    { "idiom" : "universal", "filename" : "thumb_lantern.png" }
+  ],
+  "info" : { "author" : "xcode", "version" : 1 }
+}
