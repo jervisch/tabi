@@ -27,15 +27,20 @@ struct AtlasView: View {
         }
     }
 
-    /// Match a reverse-geocoded prefecture name ("Kyoto", "Hokkaido",
-    /// "Tokyo Prefecture"…) to a GeoJSON shape ("Kyoto Fu", "Hokkai Do"…).
+/// Match a reverse-geocoded prefecture name ("Kyoto", "Hokkaido",
+/// "Tokyo Prefecture"…) to a GeoJSON shape ("Kyoto Fu", "Hokkai Do"…).
     private static func prefectureID(matching name: String) -> String? {
         let visitName = normalize(name)
         guard !visitName.isEmpty else { return nil }
+        // Try matching with both the normalized name and the raw shape name
+        // (some GeoJSON have suffixes like "-fu", "-ken" that get stripped)
         return JapanGeography.prefectures().first { shape in
-            let shapeName = normalizeShape(shape.nameEn)
-            guard !shapeName.isEmpty else { return false }
+            let shapeName = shape.nameEn.lowercased()
+                .replacingOccurrences(of: "prefecture", with: "")
+                .replacingOccurrences(of: " ", with: "")
+            // Try normalized visit name vs raw shape name
             return visitName == shapeName
+                || visitName == normalizeShape(shape.nameEn)
                 || visitName.hasPrefix(shapeName)
                 || shapeName.hasPrefix(visitName)
         }?.id
@@ -47,8 +52,7 @@ struct AtlasView: View {
             options: [.diacriticInsensitive, .widthInsensitive],
             locale: Locale(identifier: "en_US_POSIX")
         )
-        return folded
-            .lowercased()
+        return folded.lowercased()
             .replacingOccurrences(of: "prefecture", with: "")
             .replacingOccurrences(of: " ", with: "")
     }
@@ -73,7 +77,8 @@ struct AtlasView: View {
         }
     }
 
-    /// Printed-on-the-atlas progress note. No card, no pill, no shadow.
+    /// Progress note on a translucent washi wash — readable over any part
+    /// of the map without becoming a floating card.
     private var statsAnnotation: some View {
         VStack(alignment: .leading, spacing: 12) {
             VStack(alignment: .leading, spacing: 1) {
@@ -95,6 +100,16 @@ struct AtlasView: View {
                     .foregroundStyle(TABiColor.sumi.opacity(0.4))
             }
         }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
+        .background(
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .fill(TABiColor.washi.opacity(0.78))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .strokeBorder(TABiColor.sumi.opacity(0.08), lineWidth: 0.5)
+                )
+        )
         .allowsHitTesting(false)
     }
 
@@ -113,8 +128,7 @@ struct AtlasView: View {
                     }
                 )
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                // Clear the bottom navigation — the map remains the page.
-                .padding(.bottom, 72)
+                // Full-bleed: the map flows behind the bottom navigation.
                 .washiBackground()
 
                 statsAnnotation

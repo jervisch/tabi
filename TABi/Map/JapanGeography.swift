@@ -135,10 +135,10 @@ private final class GeometryCache: @unchecked Sendable {
     private static func ringsFrom(geometryType: String, coordinates: Any) -> [[CLLocationCoordinate2D]] {
         var rings: [[CLLocationCoordinate2D]] = []
         if geometryType == "Polygon", let polys = coordinates as? [[[Any]]] {
-            for poly in polys {
-                if let outer = poly.first {
-                    rings.append(coords(outer))
-                }
+            // Polygon coordinates = [outerRing, hole, …] — the outer ring is
+            // the ring itself, not its first point.
+            if let outer = polys.first {
+                rings.append(coords(outer))
             }
         } else if geometryType == "MultiPolygon", let multi = coordinates as? [[[[Any]]]] {
             for poly in multi {

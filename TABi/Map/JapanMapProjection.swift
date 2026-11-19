@@ -16,11 +16,12 @@ struct JapanMapProjection {
     }
 
     /// Mainland bounds — calibrated to the 1024×1536 `japan_map_base.png`
-    /// (GeoJSON outlines overlaid on the artwork until coastlines traced).
-    static let mainMinLat: Double = 28.66
-    static let mainMaxLat: Double = 46.26
-    static let mainMinLon: Double = 128.83
-    static let mainMaxLon: Double = 146.0
+    /// by optimizing GeoJSON-coastline → painted-land distance (2026-11-18).
+    /// See `docs/japan-map-asset-limitations.md`.
+    static let mainMinLat: Double = 28.59
+    static let mainMaxLat: Double = 46.30
+    static let mainMinLon: Double = 129.13
+    static let mainMaxLon: Double = 146.14
 
     /// Okinawa inset bounds (app-defined inset card).
     static let insetMinLat: Double = 24.0

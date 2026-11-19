@@ -4,9 +4,12 @@ import UIKit
 
 final class RealCamera: NSObject, CameraCapturing {
     let session = AVCaptureSession()
+    var flashMode: AVCaptureDevice.FlashMode = .off
     private let photoOutput = AVCapturePhotoOutput()
     private let queue = DispatchQueue(label: "tabi.camera")
     private var isConfigured = false
+    private var currentInput: AVCaptureDeviceInput?
+    private var currentPosition: AVCaptureDevice.Position = .back
     private var photoContinuation: CheckedContinuation<Data, Error>?
 
     var authorization: AVAuthorizationStatus {
@@ -42,6 +45,25 @@ final class RealCamera: NSObject, CameraCapturing {
         }
     }
 
+    func flipCamera() throws {
+        guard authorization == .authorized else { throw CameraError.permissionDenied }
+        try configureIfNeeded()
+        let newPosition: AVCaptureDevice.Position = currentPosition == .back ? .front : .back
+        guard let device = AVCaptureDevice.default(
+            .builtInWideAngleCamera, for: .video, position: newPosition
+        ) else { return }
+        let newInput = try AVCaptureDeviceInput(device: device)
+        guard session.canAddInput(newInput) else { return }
+        session.beginConfiguration()
+        if let currentInput {
+            session.removeInput(currentInput)
+        }
+        session.addInput(newInput)
+        session.commitConfiguration()
+        currentInput = newInput
+        currentPosition = newPosition
+    }
+
     func capturePhoto() async throws -> Data {
         guard authorization == .authorized else { throw CameraError.permissionDenied }
         try configureIfNeeded()
@@ -56,6 +78,7 @@ final class RealCamera: NSObject, CameraCapturing {
                 if self.photoOutput.availablePhotoCodecTypes.contains(.jpeg) {
                     settings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])
                 }
+                settings.flashMode = self.flashMode
                 self.photoOutput.capturePhoto(with: settings, delegate: self)
             }
         }
@@ -73,6 +96,7 @@ final class RealCamera: NSObject, CameraCapturing {
             throw CameraError.unavailable
         }
         session.addInput(input)
+        currentInput = input
 
         guard session.canAddOutput(photoOutput) else {
             session.commitConfiguration()

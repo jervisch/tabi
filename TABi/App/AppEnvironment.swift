@@ -78,9 +78,7 @@ final class AppEnvironment {
         let processed = (try? film.process(raw)) ?? raw
         let uiImage = UIImage(data: processed) ?? UIImage()
 
-        let id = UUID()
-        let fileName = try MemoryFileStore.write(processed, id: id)
-
+        // No file write here — `saveMemory` persists the image exactly once.
         return (processedImage: uiImage, components: components)
     }
 

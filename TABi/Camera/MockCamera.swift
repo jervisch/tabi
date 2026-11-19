@@ -4,6 +4,7 @@ import AVFoundation
 final class MockCamera: CameraCapturing {
     var authorization: AVAuthorizationStatus
     let session = AVCaptureSession()
+    var flashMode: AVCaptureDevice.FlashMode = .off
     var fixtureData: Data
     private(set) var captureCount = 0
     private(set) var started = false
@@ -31,6 +32,8 @@ final class MockCamera: CameraCapturing {
     func stop() {
         started = false
     }
+
+    func flipCamera() throws {}
 
     func capturePhoto() async throws -> Data {
         guard authorization == .authorized else { throw CameraError.permissionDenied }

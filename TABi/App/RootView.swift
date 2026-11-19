@@ -14,28 +14,17 @@ struct ShutterButton: View {
     var body: some View {
         Button(action: action) {
             ZStack {
+                // Thin cream ring around the vermilion disc
+                Circle()
+                    .stroke(TABiColor.washi, lineWidth: 3)
+                    .frame(width: 64, height: 64)
+
                 Circle()
                     .fill(TABiColor.vermilion)
-                    .frame(width: 48, height: 48)
-                    .scaleEffect(isPressed ? 0.94 : 1.0)
-                    .opacity(isPressed ? 0.85 : 1)
-
-                Image(systemName: "camera")
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(.white)
+                    .frame(width: 56, height: 56)
             }
         }
         .buttonStyle(PressableStyle(isPressed: $isPressed))
-        .highPriorityGesture(
-            DragGesture()
-                .onEnded { value in
-                    let horizontalSwipe = abs(value.translation.width) > abs(value.translation.height) + 20
-                    if horizontalSwipe && value.translation.width > 0 {
-                        // right-to-left swipe on Atlas → Memories
-                        // left-to-right swipe on Memories → Atlas handled elsewhere
-                    }
-                }
-        )
     }
 }
 
@@ -50,6 +39,20 @@ struct PressableStyle: ButtonStyle {
     }
 }
 
+/// Hand-drawn vermilion underline beneath the selected nav label.
+private struct HandDrawnUnderline: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let midY = rect.midY
+        path.move(to: CGPoint(x: rect.minX, y: midY + 1.5))
+        path.addQuadCurve(
+            to: CGPoint(x: rect.maxX, y: midY - 1),
+            control: CGPoint(x: rect.midX, y: midY + 3)
+        )
+        return path
+    }
+}
+
 struct RootView: View {
     @State private var screen: Screen = .atlas
     @State private var isCameraPresented = false
@@ -57,93 +60,21 @@ struct RootView: View {
 
     var body: some View {
         ZStack {
+            // ── Screens ──────────────────────────────────────────────
             Group {
                 switch screen {
                 case .atlas:
                     AtlasView()
-                        .highPriorityGesture(
-                            DragGesture()
-                                .onEnded { value in
-                                    // Right-edge swipe leftward → Memories
-                                    if value.translation.width < -40 && abs(value.translation.width) > abs(value.translation.height) {
-                                        withAnimation(.easeOut(duration: 0.25)) {
-                                            screen = .memories
-                                        }
-                                    }
-                                }
-                        )
-                        .highPriorityGesture(
-                            MagnificationGesture()
-                                .onChanged { value in
-                                    // pinch-to-zoom handled in IllustratedJapanMapView
-                                }
-                        )
                 case .memories:
                     MemoriesView()
-                        .highPriorityGesture(
-                            DragGesture()
-                                .onEnded { value in
-                                    // Left-edge swipe rightward → Atlas
-                                    if value.translation.width > 40 && abs(value.translation.width) > abs(value.translation.height) {
-                                        withAnimation(.easeOut(duration: 0.25)) {
-                                            screen = .atlas
-                                        }
-                                    }
-                                }
-                        )
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-            // Camera button: circular vermilion, bottom safe area, no label
+            // ── Bottom navigation (persistent, warm-washi strip) ─────
             VStack {
                 Spacer()
-                HStack {
-                    Spacer()
-                    ShutterButton(isPressed: $isCameraPressed) {
-                        isCameraPresented = true
-                    }
-                    .padding(.bottom, 40)
-                }
-            }
-
-            // Edge-swipe indicator (subtle) — optional, for discoverability
-            // Atlas→Memories: right edge drag area
-            if screen == .atlas {
-                HStack {
-                    Spacer()
-                    Rectangle()
-                        .fill(TABiColor.sumi.opacity(0.08))
-                        .frame(width: 44)
-                        .gesture(
-                            DragGesture()
-                                .onEnded { value in
-                                    if value.translation.width < -40 && abs(value.translation.width) > abs(value.translation.height) {
-                                        withAnimation(.easeOut(duration: 0.25)) {
-                                            screen = .memories
-                                        }
-                                    }
-                                }
-                        )
-                }
-            } else {
-                // Memories→Atlas: left edge drag area
-                HStack {
-                    Rectangle()
-                        .fill(TABiColor.sumi.opacity(0.08))
-                        .frame(width: 44)
-                        .gesture(
-                            DragGesture()
-                                .onEnded { value in
-                                    if value.translation.width > 40 && abs(value.translation.width) > abs(value.translation.height) {
-                                        withAnimation(.easeOut(duration: 0.25)) {
-                                            screen = .atlas
-                                        }
-                                    }
-                                }
-                        )
-                    Spacer()
-                }
+                bottomNav
             }
         }
         .background(TABiColor.washi.ignoresSafeArea())
@@ -151,5 +82,63 @@ struct RootView: View {
             CameraView()
         }
         .animation(.easeOut(duration: 0.25), value: screen)
+    }
+
+    // MARK: - Bottom nav
+
+    private var bottomNav: some View {
+        ZStack(alignment: .top) {
+            // Washi strip — extends into the bottom safe area
+            TABiColor.washi
+                .frame(height: 76)
+                .frame(maxWidth: .infinity)
+                .ignoresSafeArea(edges: .bottom)
+                .shadow(color: .black.opacity(0.06), radius: 6, y: -2)
+
+            // Map · Memories — English labels only, no icons
+            HStack(alignment: .top) {
+                navLabel("Map", isSelected: screen == .atlas) {
+                    withAnimation(.easeOut(duration: 0.25)) {
+                        screen = .atlas
+                    }
+                }
+
+                Spacer()
+
+                navLabel("Memories", isSelected: screen == .memories) {
+                    withAnimation(.easeOut(duration: 0.25)) {
+                        screen = .memories
+                    }
+                }
+            }
+            .padding(.horizontal, 44)
+            .padding(.top, 16)
+
+            // Center shutter — slightly overlaps the strip's top edge
+            ShutterButton(isPressed: $isCameraPressed) {
+                isCameraPresented = true
+            }
+            .offset(y: -14)
+        }
+    }
+
+    private func navLabel(_ title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            VStack(spacing: 5) {
+                Text(title)
+                    .font(TABiFont.placeEnglish(19, weight: isSelected ? .medium : .regular))
+                    .foregroundStyle(TABiColor.sumi.opacity(isSelected ? 1 : 0.55))
+
+                HandDrawnUnderline()
+                    .stroke(
+                        TABiColor.vermilion,
+                        style: StrokeStyle(lineWidth: 2, lineCap: .round)
+                    )
+                    .frame(width: 38, height: 5)
+                    .opacity(isSelected ? 1 : 0)
+            }
+            .fixedSize()
+        }
+        .buttonStyle(.plain)
     }
 }

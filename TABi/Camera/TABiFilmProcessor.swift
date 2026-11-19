@@ -37,8 +37,12 @@ struct TABiFilmProcessor {
         // 5) soft highlight rolloff + hint of halation
         output = applyHighlightRolloff(to: output)
 
+        // Render from the ORIGINAL finite extent — intermediate blur/generator
+        // stages can report infinite or invalid extents on some runtimes.
+        let renderRect = image.extent
+        output = output.cropped(to: renderRect)
         let context = CIContext(options: [.cacheIntermediates: false])
-        guard let cg = context.createCGImage(output, from: output.extent) else {
+        guard let cg = context.createCGImage(output, from: renderRect) else {
             throw CameraError.captureFailed
         }
         let uiImage = UIImage(cgImage: cg)
@@ -54,10 +58,17 @@ struct TABiFilmProcessor {
             .cropped(to: image.extent)
         var result = image.applyingFilter("CISoftLightBlendMode", parameters: [kCIInputBackgroundImageKey: warm])
 
-        let cool = CIImage(color: CIColor(red: 1 - shadowCoolness * 0.5, green: 1, blue: 1 + shadowCoolness))
-            .cropped(to: image.extent)
-        // Screen a touch of cool into shadows via source-over low opacity equivalent:
-        result = result.applyingFilter("CIPlusBlendMode", parameters: [kCIInputBackgroundImageKey: cool])
+        // A touch of cool into shadows — translucent cool layer over the image
+        // (source-over low-opacity equivalent; CIPlusBlendMode reported corrupt
+        // extents on the test runtime).
+        let cool = CIImage(color: CIColor(
+            red: 1 - shadowCoolness * 0.5,
+            green: 1,
+            blue: 1 + shadowCoolness,
+            alpha: shadowCoolness * 0.6
+        ))
+        .cropped(to: image.extent)
+        result = cool.applyingFilter("CISourceOverCompositing", parameters: [kCIInputBackgroundImageKey: result])
             .applyingFilter("CIColorControls", parameters: [kCIInputBrightnessKey: -shadowCoolness * 0.15])
         return result
     }
@@ -83,10 +94,16 @@ struct TABiFilmProcessor {
     }
 
     private func applyHighlightRolloff(to image: CIImage) -> CIImage {
+        // Blur output has infinite extent on some runtimes — crop every stage
+        // back to the source extent so downstream blends stay finite.
+        let extent = image.extent
         let blurred = image.applyingFilter("CIGaussianBlur", parameters: [kCIInputRadiusKey: 12])
+            .cropped(to: extent)
         let halation = image.applyingFilter("CIAdditionCompositing", parameters: [kCIInputBackgroundImageKey: blurred])
             .applyingFilter("CIColorControls", parameters: [kCIInputBrightnessKey: -0.08])
+            .cropped(to: extent)
         return image.applyingFilter("CIOverlayBlendMode", parameters: [kCIInputBackgroundImageKey: halation])
             .applyingFilter("CIColorControls", parameters: [kCIInputBrightnessKey: 0.005])
+            .cropped(to: extent)
     }
 }

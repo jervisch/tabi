@@ -12,8 +12,10 @@ enum CameraError: Error, Equatable {
 protocol CameraCapturing: AnyObject {
     var authorization: AVAuthorizationStatus { get }
     var session: AVCaptureSession { get }
+    var flashMode: AVCaptureDevice.FlashMode { get set }
     func requestPermission() async -> Bool
     func start() throws
     func stop()
+    func flipCamera() throws
     func capturePhoto() async throws -> Data
 }

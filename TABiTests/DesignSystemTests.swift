@@ -48,6 +48,7 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertEqual(TABiColor.peach.rgba255, RGBATuple(r: 0xE9, g: 0xA5, b: 0x9A, a: 255))
         XCTAssertEqual(TABiColor.sand.rgba255, RGBATuple(r: 0xDC, g: 0xC8, b: 0xA5, a: 255))
     }
+}
 
 extension Color {
     var rgba255: RGBATuple {

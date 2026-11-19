@@ -16,8 +16,15 @@ struct IllustratedJapanMapView: View {
     var onSelectPrefecture: (PrefectureShape) -> Void = { _ in }
 
     @State private var pulse = false
-    @State private var zoom: CGFloat = 1
+    /// `nil` = not pinched yet → resolves to the live fit-to-viewport zoom
+    /// every render (safe even if the first layout reports a zero size).
+    @State private var zoom: CGFloat?
     @State private var panOffset: CGPoint = .zero
+    /// Base state captured when a gesture begins, so pan/zoom accumulate
+    /// across successive gestures instead of snapping back to zero.
+    @State private var panStart: CGPoint?
+    @State private var zoomStart: CGFloat?
+    @State private var isPinching = false
 
     private static let mapAspect: CGFloat = 1024.0 / 1536.0
     private static let insetAspect: CGFloat = 512.0 / 407.0
@@ -33,12 +40,27 @@ struct IllustratedJapanMapView: View {
     var body: some View {
         GeometryReader { geo in
             let area = CGRect(origin: .zero, size: geo.size)
+            // Zoom-out floor: the whole map fits inside the viewport.
+            let fitZoom = max(0.05, min(area.width / 1024, area.height / 1536))
+            // Effective zoom: start at fit (entire map visible) until first pinch.
+            let z = zoom ?? fitZoom
             // Map content larger than viewport
-            let mapContentSize = CGSize(width: 1024 * zoom, height: 1536 * zoom)
-            // Clamp panOffset so we never pan beyond the map edges
-            let clampedPanOffset = CGSize(
-                width: max(0, min(panOffset.x, mapContentSize.width - area.width)),
-                height: max(0, min(panOffset.y, mapContentSize.height - area.height))
+            let mapContentSize = CGSize(width: 1024 * z, height: 1536 * z)
+            // Center-anchored pan limits — the art may slide, but never
+            // reveal empty space past its edges.
+            let maxPan = CGSize(
+                width: max(0, (mapContentSize.width - area.width) / 2),
+                height: max(0, (mapContentSize.height - area.height) / 2)
+            )
+            let pan = CGPoint(
+                x: min(maxPan.width, max(-maxPan.width, panOffset.x)),
+                y: min(maxPan.height, max(-maxPan.height, panOffset.y))
+            )
+            // Top-left of the map art in view coordinates. The image and the
+            // sage fills share this origin so they stay exactly registered.
+            let imageOrigin = CGPoint(
+                x: area.midX + pan.x - mapContentSize.width / 2,
+                y: area.midY + pan.y - mapContentSize.height / 2
             )
 
             ZStack(alignment: .topLeading) {
@@ -46,11 +68,21 @@ struct IllustratedJapanMapView: View {
                 Image("japan_map_base")
                     .resizable()
                     .frame(width: mapContentSize.width, height: mapContentSize.height)
-                    .position(x: area.midX + clampedPanOffset.width, y: area.midY + clampedPanOffset.height)
+                    .offset(x: imageOrigin.x, y: imageOrigin.y)
 
                 // ── Sage prefecture fills (moss opacity by visit count) ─────
+                // Masked to the painted landmass (art coords), then given the
+                // exact same transform as the image so they stay registered.
                 SagePrefectureFills(counts: visitedPrefectureCounts, mainShapes: mainShapes)
-                    .opacity(1)
+                    .mask {
+                        Image("japan_land_mask")
+                            .resizable()
+                            .frame(width: 1024, height: 1536)
+                    }
+                    .frame(width: 1024, height: 1536)
+                    .scaleEffect(z, anchor: .topLeading)
+                    .offset(x: imageOrigin.x, y: imageOrigin.y)
+                    .allowsHitTesting(false)
 
                 // ── Geographic tap target (dataset, not artwork) ─────────
                 Color.clear
@@ -60,7 +92,10 @@ struct IllustratedJapanMapView: View {
                         SpatialTapGesture()
                             .onEnded { value in
                                 let screenPt = CGPoint(x: value.location.x, y: value.location.y)
-                                let artPt = CGPoint(x: (screenPt.x - panOffset.x) / zoom, y: (screenPt.y - panOffset.y) / zoom)
+                                let artPt = CGPoint(
+                                    x: (screenPt.x - imageOrigin.x) / z,
+                                    y: (screenPt.y - imageOrigin.y) / z
+                                )
                                 if let hit = JapanMapProjection.prefecture(
                                     containing: artPt,
                                     in: CGRect(x: 0, y: 0, width: 1024, height: 1536),
@@ -74,13 +109,34 @@ struct IllustratedJapanMapView: View {
             .gesture(
                 DragGesture()
                     .onChanged { value in
-                        panOffset = CGPoint(x: value.translation.width, y: value.translation.height)
+                        guard !isPinching else { return }
+                        if panStart == nil { panStart = panOffset }
+                        let base = panStart ?? panOffset
+                        let raw = CGPoint(
+                            x: base.x + value.translation.width,
+                            y: base.y + value.translation.height
+                        )
+                        panOffset = CGPoint(
+                            x: min(maxPan.width, max(-maxPan.width, raw.x)),
+                            y: min(maxPan.height, max(-maxPan.height, raw.y))
+                        )
+                    }
+                    .onEnded { _ in
+                        panStart = nil
                     }
             )
             .gesture(
                 MagnificationGesture()
                     .onChanged { value in
-                        zoom = min(2.5, max(1.0, value))
+                        if zoomStart == nil {
+                            zoomStart = z
+                            isPinching = true
+                        }
+                        zoom = min(2.5, max(fitZoom, (zoomStart ?? z) * value))
+                    }
+                    .onEnded { _ in
+                        zoomStart = nil
+                        isPinching = false
                     }
             )
             .onAppear {
@@ -147,8 +203,12 @@ struct IllustratedJapanMapView: View {
                 if let count = counts[prefectureID],
                    let shape = mainShapes.first(where: { $0.id == prefectureID }) {
                     let projection = JapanMapProjection(rect: CGRect(x: 0, y: 0, width: 1024, height: 1536))
-                    Path(projection.path(for: shape.rings[0]))
-                        .fill(TABiColor.moss.opacity(min(0.30, 0.10 + 0.06 * Double(count))))
+                    let opacity = min(0.50, 0.25 + 0.10 * Double(count))
+                    // Every ring — main body and island chains alike.
+                    ForEach(shape.rings.indices, id: \.self) { index in
+                        Path(projection.path(for: shape.rings[index]))
+                            .fill(TABiColor.moss.opacity(opacity))
+                    }
                 }
             }
             .mask {

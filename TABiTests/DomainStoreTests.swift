@@ -92,12 +92,22 @@ final class DomainStoreTests: XCTestCase {
         let calendar = Calendar(identifier: .gregorian)
         let morning = calendar.date(from: DateComponents(year: 2026, month: 3, day: 18, hour: 9))!
         let afternoon = calendar.date(from: DateComponents(year: 2026, month: 3, day: 18, hour: 15))!
-        let memories = [
+
+        // Same-day cross-region excursion (< 12h gap) stays one trip —
+        // documented rule: "date gap > 2 days OR region change with gap > 12h".
+        let dayTrip = [
             sampleMemory(city: "Tokyo", prefecture: "Tokyo", date: morning),
             sampleMemory(city: "Kyoto", prefecture: "Kyoto", date: afternoon)
         ]
-        let trips = TripGrouper.group(memories, calendar: calendar)
-        XCTAssertEqual(trips.count, 2)
+        XCTAssertEqual(TripGrouper.group(dayTrip, calendar: calendar).count, 1)
+
+        // Region change with gap > 12h starts a new trip.
+        let nextMorning = calendar.date(from: DateComponents(year: 2026, month: 3, day: 19, hour: 9))!
+        let splitTrip = [
+            sampleMemory(city: "Tokyo", prefecture: "Tokyo", date: morning),
+            sampleMemory(city: "Kyoto", prefecture: "Kyoto", date: nextMorning)
+        ]
+        XCTAssertEqual(TripGrouper.group(splitTrip, calendar: calendar).count, 2)
     }
 
     func testPlaceComponentsJapanDetection() {
